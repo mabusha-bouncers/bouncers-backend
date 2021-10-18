@@ -39,7 +39,7 @@ class Config(Singleton):
         self.DATASTORE_TIMEOUT: int = 360  # seconds 6 minutes
         self.DATASTORE_RETRIES: int = 3  # total retries when saving to datastore
 
-        self.CURRENCY: str = "USD"
+        self.CURRENCY: str = "ZAR"
 
         self.IS_PRODUCTION: bool = True
         self.SECRET_KEY: str = os.environ.get("SECRET_KEY") or config("SECRET_KEY")
