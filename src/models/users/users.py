@@ -31,3 +31,10 @@ class UserModel(BaseModel):
     user_type: str = ndb.StringProperty()
     date_created: date = ndb.DateProperty(auto_now_add=True)
     last_login: datetime = ndb.DateTimeProperty(auto_now=True)
+
+    def __bool__(self) -> bool:
+        return bool(self.uid)
+
+    def __str__(self) -> str:
+        return f"<User: user_type: {self.user_type} " \
+               f"names: {self.names}, surname: {self.surname}, email: {self.email}, cell: {self.cell}"
