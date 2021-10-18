@@ -5,7 +5,9 @@
 from datetime import date, datetime
 from google.cloud import ndb
 
+from src.config import config_instance
 from src.models.basemodel import BaseModel
+from src.models.mixins.mixins import AmountMixin
 
 
 class TimeSheetModel(BaseModel):
@@ -27,3 +29,18 @@ class TimeSheetModel(BaseModel):
     time_of_duty: datetime = ndb.DateTimeProperty()
     time_worked_hours: int = ndb.IntegerProperty()
     hourly_rate: int = ndb.IntegerProperty()
+
+    #   TODO add overtime rates
+
+    def total_earned(self) -> AmountMixin:
+        """
+        **total_earned**
+            will return amount earned in currency format
+            see AmountMixin
+        :return:
+        """
+        amount_cents = self.time_worked_hours * self.hourly_rate * 100
+        return AmountMixin(amount_cents=amount_cents, currency=config_instance.CURRENCY)
+
+    def __str__(self) -> str:
+        return f"<TimeSheet: rate: {self.hourly_rate} time worked: {self.time_worked_hours} total_earned: {self.total_earned}"
