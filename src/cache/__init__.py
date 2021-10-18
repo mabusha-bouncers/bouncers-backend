@@ -1,0 +1,1 @@
+from src.cache.cache import app_cache

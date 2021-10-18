@@ -1,0 +1,1 @@
+from src.models.basemodel.model import BaseModel
