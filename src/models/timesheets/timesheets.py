@@ -9,6 +9,10 @@ from src.models.basemodel import BaseModel
 
 
 class TimeSheetModel(BaseModel):
+    """
+        **TimeSheetModel**
+            keeps track of hours worked per bouncer / security guard
+    """
     uid: str = ndb.StringProperty(indexed=True)
     today: date = ndb.DateProperty()
     time_on_duty: datetime = ndb.DateTimeProperty()
