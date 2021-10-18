@@ -6,3 +6,4 @@ class CacheManager(Singleton):
         pass
 
 
+app_cache: CacheManager = CacheManager()
