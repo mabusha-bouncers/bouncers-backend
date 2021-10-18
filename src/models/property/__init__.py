@@ -125,7 +125,7 @@ class Util:
         to_check: str = domain.replace('https://', '') if domain.startswith('https://') else domain
         # noinspection HttpUrlsUsage
         to_check: str = to_check.replace('http://', '') if to_check.startswith('http://') else to_check
-        to_check: str = to_check.replace('/', '') if to_check.endswith('/') else to_check
+        to_check: str = to_check[-1].replace('/', '') if to_check.endswith('/') else to_check
         to_check: str = to_check.split(sep='/')[0] if '/' in to_check else to_check
         print(f' domain to check : {to_check}')
         # to_check = 'google.com'
@@ -307,14 +307,14 @@ class PropertySetters(Events, Util):
     @staticmethod
     def set_int(prop: ndb.IntegerProperty, value: Optional[int]) -> int:
         """
-
+            **set_int**
         :param prop:
         :param value:
         :return:
         """
         property_name: str = property_.return_property_name(prop=prop)
         if not (isinstance(value, int)):
-            return 0
+            return int(0)
 
         return value
 
@@ -327,9 +327,6 @@ class PropertySetters(Events, Util):
         :return:
         """
         property_name: str = property_.return_property_name(prop=prop)
-        if value is None or value == "None" or not bool(value.strip()):
-            return float(0)
-
         if not (isinstance(value, float)):
             return float(0)
 
