@@ -34,7 +34,7 @@ def use_context(func: Callable):
             functions/ methods needs to be wrapped by this wrapper when they interact with the database somehow
 
     :param func: function to wrap
-    :return: function wrapped with ndb.context
+    :return: function wrapped with ndb.context 
     """
     @functools.wraps(func)
     def wrapper(*args, **kwargs) -> Callable:
