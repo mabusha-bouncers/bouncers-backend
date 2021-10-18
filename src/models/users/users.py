@@ -5,7 +5,7 @@
         bouncers login and authorization
 """
 from google.cloud import ndb
-
+from datetime import date, datetime
 from src.models.basemodel import BaseModel
 
 
@@ -21,7 +21,7 @@ class UserModel(BaseModel):
             email: users email address
             cell: users cell number
             user_type: type of user either its admins, clients, or bouncers
-
+            date_created and last_login are auto fields will always hold valid dates
     """
     uid: str = ndb.StringProperty(indexed=True)
     names: str = ndb.StringProperty()
@@ -29,3 +29,5 @@ class UserModel(BaseModel):
     email: str = ndb.StringProperty()
     cell: str = ndb.StringProperty()
     user_type: str = ndb.StringProperty()
+    date_created: date = ndb.DateProperty(auto_now_add=True)
+    last_login: datetime = ndb.DateTimeProperty(auto_now=True)
