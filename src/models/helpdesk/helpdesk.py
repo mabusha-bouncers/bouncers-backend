@@ -24,6 +24,7 @@ class HelpDesk(BaseModel):
             uid: unique id for users
             ticket_id: unique id for this ticket
     """
+    _min_length: int = 36
     uid: str = ndb.StringProperty(indexed=True)
     ticket_id: str = ndb.StringProperty(indexed=True)
     subject: str = ndb.StringProperty()
@@ -33,3 +34,9 @@ class HelpDesk(BaseModel):
     date_created: date = ndb.DateProperty(auto_now_add=True)
     date_updated: date = ndb.DateProperty(auto_now=True)
 
+    def __bool__(self) -> bool:
+        return bool(self.uid)
+
+    def __str__(self) -> str:
+        """Allows printing of helpdesk"""
+        return f"<Ticket: type: {self.ticket_type},  subject: {self.subject},  body: {self.body[0:self._min_length]}"
