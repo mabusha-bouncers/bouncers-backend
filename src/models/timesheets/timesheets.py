@@ -43,4 +43,13 @@ class TimeSheetModel(BaseModel):
         return AmountMixin(amount_cents=amount_cents, currency=config_instance.CURRENCY)
 
     def __str__(self) -> str:
-        return f"<TimeSheet: rate: {self.hourly_rate} time worked: {self.time_worked_hours} total_earned: {self.total_earned}"
+        return f"<TimeSheet: rate: {self.hourly_rate} time worked: {self.time_worked_hours} " \
+               f"total_earned: {self.total_earned}"
+
+    def __bool__(self) -> bool:
+        """
+            **__bool__**
+                determines if the timesheet is valid
+        :return: boolean -> True if Valid
+        """
+        return bool(self.uid)
