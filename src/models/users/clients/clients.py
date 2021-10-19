@@ -8,22 +8,20 @@ __twitter__ = "@blueitserver"
 __github_profile__ = "https://github.com/freelancing-solutions/"
 __licence__ = "MIT"
 
-from enum import Enum
 from typing import List
-
 from google.cloud import ndb
 
 from src.models.address import AddressModel
 from src.models.users import UserModel
 
 
-class ClientTypes(Enum):
+class ClientTypes:
     business: str = 'business'
     personal: str = 'personal'
 
     @classmethod
-    def types(cls) -> List:
-        return list(ClientTypes)
+    def types(cls) -> List[str]:
+        return [cls.business, cls.personal]
 
 
 class ClientModel(UserModel):
