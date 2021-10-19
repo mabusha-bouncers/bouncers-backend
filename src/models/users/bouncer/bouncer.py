@@ -4,6 +4,7 @@
 """
 from google.cloud import ndb
 
+from src.models.address import AddressModel
 from src.models.users import UserModel
 
 
@@ -18,5 +19,14 @@ class BouncerModel(UserModel):
     """
     available: bool = ndb.BooleanProperty(default=False)
     contact_preference: str = ndb.StringProperty(default='cell')
-    location_address = ndb.KeyProperty()
+    certified: bool = ndb.BooleanProperty(default=False)
+    security_grade: str = ndb.StringProperty(default=None)
+    years_experience: int = ndb.IntegerProperty(default=0)
+    rating: int = ndb.IntegerProperty(default=0)
 
+    def __str__(self) -> str:
+        return f"{super().__str__()} available: {self.available},  contact_preference: {self.contact_preference}" \
+               f"Grade: {self.security_grade}, Rating: {self.rating}"
+
+    def __bool__(self) -> bool:
+        return super().__bool__()
