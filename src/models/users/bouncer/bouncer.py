@@ -1,5 +1,6 @@
 """
-    module inherits from user and add bouncer specific functionality
+    Bouncers / Security Guards  Module
+        module inherits from user and add bouncer specific functionality
 """
 from google.cloud import ndb
 
