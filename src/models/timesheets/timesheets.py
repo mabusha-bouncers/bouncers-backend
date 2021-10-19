@@ -9,11 +9,27 @@ __github_profile__ = "https://github.com/freelancing-solutions/"
 __licence__ = "MIT"
 
 from datetime import date, datetime
+from typing import List
+
 from google.cloud import ndb
 
 from src.config import config_instance
 from src.models.basemodel import BaseModel
 from src.models.mixins.mixins import AmountMixin
+
+
+class DaysOfWeekType:
+    sunday: int = 0
+    monday: int = 1
+    tuesday: int = 2
+    wednesday: int = 3
+    thursday: int = 4
+    friday: int = 5
+    saturday: int = 6
+
+    @classmethod
+    def types(cls) -> List[int]:
+        return sorted([cls.sunday, cls.monday, cls.tuesday, cls.wednesday, cls.thursday, cls.friday, cls.saturday])
 
 
 class TimeSheetModel(BaseModel):
@@ -30,6 +46,7 @@ class TimeSheetModel(BaseModel):
             hourly_rate: int (money in rands) -> hourly rate for bouncer
     """
     uid: str = ndb.StringProperty(indexed=True)
+    day_of_week: int = ndb.IntegerProperty(choices=DaysOfWeekType.types(), default=DaysOfWeekType.monday)
     today: date = ndb.DateProperty()
     time_on_duty: datetime = ndb.DateTimeProperty()
     time_of_duty: datetime = ndb.DateTimeProperty()
