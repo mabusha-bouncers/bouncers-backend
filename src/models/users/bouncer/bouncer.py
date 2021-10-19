@@ -24,7 +24,6 @@ class BouncerModel(UserModel):
             contact_preference: cell / email -> defaults to cell phone
     """
     available: bool = ndb.BooleanProperty(default=False)
-    contact_preference: str = ndb.StringProperty(default='cell')
     certified: bool = ndb.BooleanProperty(default=False)
     security_grade: str = ndb.StringProperty(default=None)
     years_experience: int = ndb.IntegerProperty(default=0)

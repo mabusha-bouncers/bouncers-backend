@@ -19,6 +19,15 @@ from src.models.address import AddressModel
 from src.models.basemodel import BaseModel
 
 
+class ContactPreferenceTypes(Enum):
+    cell: str = 'cell'
+    email: str = 'email'
+
+    @classmethod
+    def types(cls) -> List:
+        return [cls.cell, cls.email]
+
+
 class UserType(Enum):
     admin = 'admin'
     client = 'client'
@@ -51,6 +60,7 @@ class UserModel(BaseModel):
     date_created: date = ndb.DateProperty(auto_now_add=True)
     last_login: datetime = ndb.DateTimeProperty(auto_now=True)
     address_key: ndb.Key = ndb.KeyProperty(kind=AddressModel)
+    contact_preference: str = ndb.StringProperty(choices=ContactPreferenceTypes.types())
 
     @property
     def address(self) -> AddressModel:
@@ -66,3 +76,4 @@ class UserModel(BaseModel):
 
 if __name__ == "__main__":
     print(UserType.types())
+    print(ContactPreferenceTypes.types())
