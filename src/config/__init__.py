@@ -78,7 +78,7 @@ class Config(Singleton):
         return {
             "CACHE_TYPE": "simple",
             "CACHE_DEFAULT_TIMEOUT": self.CACHE_DEFAULT_TIMEOUT,
-            "CACHE_KEY_PREFIX": "memberships_cache_"
+            "CACHE_KEY_PREFIX": "bouncers_cache_"
         }
 
 
