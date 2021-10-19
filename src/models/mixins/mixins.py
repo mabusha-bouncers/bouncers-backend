@@ -10,6 +10,7 @@ __licence__ = "MIT"
 from src.models.basemodel import BaseModel
 from google.cloud import ndb
 from src.config import config_instance
+from src.models.property import property_
 
 
 class AmountMixin(BaseModel):
