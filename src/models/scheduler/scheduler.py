@@ -9,8 +9,8 @@ from google.cloud import ndb
 from src.models.basemodel import BaseModel
 
 
-class ScheduleModel(BaseModel):
+class SchedulerModel(BaseModel):
     """
-        **Class ScheduleModel**
+        **Class SchedulerModel**
     """
     schedule_id: str = ndb.StringProperty(required=True)
