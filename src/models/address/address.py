@@ -12,7 +12,6 @@ __licence__ = "MIT"
 
 from enum import Enum
 from typing import List
-
 from google.cloud import ndb
 from src.models.basemodel import BaseModel
 
