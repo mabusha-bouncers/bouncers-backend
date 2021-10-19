@@ -37,6 +37,7 @@ class AddressModel(BaseModel):
         **Class AddressModel**
             holds addresses for clients, admins, bouncers and places where events will take place
             or where work is available
+        `PARAMETERS`
     """
     address_id: str = ndb.StringProperty(indexed=True, required=True)
     street: str = ndb.StringProperty(indexed=True, required=True)
