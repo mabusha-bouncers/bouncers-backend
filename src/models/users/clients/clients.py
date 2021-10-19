@@ -8,6 +8,7 @@ __twitter__ = "@blueitserver"
 __github_profile__ = "https://github.com/freelancing-solutions/"
 __licence__ = "MIT"
 
+from enum import Enum
 from typing import List
 from google.cloud import ndb
 
@@ -15,13 +16,17 @@ from src.models.address import AddressModel
 from src.models.users import UserModel
 
 
-class ClientTypes:
-    business: str = 'business'
-    personal: str = 'personal'
+class ClientTypes(Enum):
+    business = 'business'
+    personal = 'personal'
 
     @classmethod
-    def types(cls) -> List[str]:
-        return [cls.business, cls.personal]
+    def types(cls) -> List:
+        return list(cls)
+
+    @classmethod
+    def values(cls) -> List[str]:
+        return [_client.value for _client in cls.types()]
 
 
 class ClientModel(UserModel):
@@ -35,7 +40,8 @@ class ClientModel(UserModel):
             description: str -> detailed description of client
             notes: str -> Notes about the client
     """
-    client_type = ndb.StringProperty(choices=ClientTypes.types())
+    client_type: str = ndb.StringProperty(default=ClientTypes.personal.value, choices=ClientTypes.values(),
+                                          indexed=True)
     business: str = ndb.StringProperty()
     description: str = ndb.StringProperty()
     notes: str = ndb.StringProperty()
