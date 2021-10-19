@@ -14,27 +14,26 @@ from typing import List
 
 from google.cloud import ndb
 from datetime import date, datetime
-from enum import Enum, auto
 from src.models.address import AddressModel
 from src.models.basemodel import BaseModel
 
 
-class ContactPreferenceTypes(Enum):
+class ContactPrefTypes:
     cell: str = 'cell'
     email: str = 'email'
 
     @classmethod
-    def types(cls) -> List:
+    def types(cls) -> List[str]:
         return [cls.cell, cls.email]
 
 
-class UserType(Enum):
+class UserType:
     admin = 'admin'
     client = 'client'
     bouncer = 'bouncer'
 
     @classmethod
-    def types(cls) -> List:
+    def types(cls) -> List[str]:
         return [cls.admin, cls.client, cls.bouncer]
 
 
@@ -56,11 +55,11 @@ class UserModel(BaseModel):
     surname: str = ndb.StringProperty()
     email: str = ndb.StringProperty()
     cell: str = ndb.StringProperty()
-    user_type = ndb.StringProperty(choices=UserType.types())
+    user_type = ndb.StringProperty(default=UserType.bouncer, choices=UserType.types())
     date_created: date = ndb.DateProperty(auto_now_add=True)
     last_login: datetime = ndb.DateTimeProperty(auto_now=True)
     address_key: ndb.Key = ndb.KeyProperty(kind=AddressModel)
-    contact_preference: str = ndb.StringProperty(choices=ContactPreferenceTypes.types())
+    contact_preference: str = ndb.StringProperty(default=ContactPrefTypes.cell, choices=ContactPrefTypes.types())
 
     @property
     def address(self) -> AddressModel:
@@ -76,4 +75,4 @@ class UserModel(BaseModel):
 
 if __name__ == "__main__":
     print(UserType.types())
-    print(ContactPreferenceTypes.types())
+    print(ContactPrefTypes.types())
