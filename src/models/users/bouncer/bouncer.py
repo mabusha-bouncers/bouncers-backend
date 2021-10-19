@@ -8,10 +8,30 @@ __twitter__ = "@blueitserver"
 __github_profile__ = "https://github.com/freelancing-solutions/"
 __licence__ = "MIT"
 
+from enum import Enum
+from typing import List
+
 from google.cloud import ndb
 
 from src.models.address import AddressModel
 from src.models.users import UserModel
+
+
+class BouncerRatingTypes(Enum):
+    """
+        **Class BouncerRatingTypes**
+            start rating system for bouncers
+    """
+    not_rated: int = 0
+    beginner: int = 1
+    experienced: int = 2
+    seasoned: int = 3
+    advanced: int = 4
+    professional: int = 5
+
+    @classmethod
+    def types(cls) -> List:
+        return list(BouncerRatingTypes)
 
 
 class BouncerModel(UserModel):
@@ -27,7 +47,7 @@ class BouncerModel(UserModel):
     certified: bool = ndb.BooleanProperty(default=False)
     security_grade: str = ndb.StringProperty(default=None)
     years_experience: int = ndb.IntegerProperty(default=0)
-    rating: int = ndb.IntegerProperty(default=0)
+    rating: int = ndb.IntegerProperty(default=0,  choices=BouncerRatingTypes.types())
 
     def __str__(self) -> str:
         return f"{super().__str__()} available: {self.available},  contact_preference: {self.contact_preference}" \
@@ -35,3 +55,8 @@ class BouncerModel(UserModel):
 
     def __bool__(self) -> bool:
         return super().__bool__()
+
+
+if __name__ == '__main__':
+    for star_rating in BouncerRatingTypes:
+        print(star_rating)
