@@ -23,7 +23,7 @@ class ClientTypes(Enum):
 
     @classmethod
     def types(cls) -> List:
-        return [cls.business, cls.personal]
+        return list(ClientTypes)
 
 
 class ClientModel(UserModel):
