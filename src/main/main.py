@@ -1,3 +1,14 @@
+"""
+    Bouncers & Security Guards Dispatcher
+        Web Application
+"""
+__developer__ = "mobius-crypt"
+__email__ = "mobiusndou@gmail.com"
+__twitter__ = "@blueitserver"
+__github_profile__ = "https://github.com/freelancing-solutions/"
+__licence__ = "MIT"
+
+
 from src.config import config_instance
 from flask import Flask
 

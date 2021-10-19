@@ -1,5 +1,6 @@
 """
-    Entry Point for mabusha Bouncers and Security Services Backend
+    Bouncers & Security Guards Dispatcher
+        Web Application
 """
 import os
 
