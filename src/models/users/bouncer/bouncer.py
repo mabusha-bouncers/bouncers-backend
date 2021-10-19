@@ -14,21 +14,25 @@ from google.cloud import ndb
 from src.models.users import UserModel
 
 
-class BouncerRatingTypes:
+class BouncerRatingTypes(Enum):
     """
         **Class BouncerRatingTypes**
             start rating system for bouncers
     """
-    not_rated: int = 0
-    beginner: int = 1
-    experienced: int = 2
-    seasoned: int = 3
-    advanced: int = 4
-    professional: int = 5
+    not_rated = 0
+    beginner = 1
+    experienced = 2
+    seasoned = 3
+    advanced = 4
+    professional = 5
 
     @classmethod
-    def types(cls) -> List[int]:
-        return [cls.not_rated, cls.beginner, cls.experienced, cls.seasoned, cls.advanced, cls.professional]
+    def types(cls) -> List:
+        return list(cls)
+
+    @classmethod
+    def values(cls) -> List:
+        return [rating.value for rating in cls.types()]
 
 
 class BouncerModel(UserModel):
@@ -44,7 +48,7 @@ class BouncerModel(UserModel):
     certified: bool = ndb.BooleanProperty(default=False)
     security_grade: str = ndb.StringProperty(default=None)
     years_experience: int = ndb.IntegerProperty(default=0)
-    rating = ndb.IntegerProperty(default=BouncerRatingTypes.not_rated,  choices=BouncerRatingTypes.types())
+    rating: int = ndb.IntegerProperty(default=BouncerRatingTypes.not_rated.value,  choices=BouncerRatingTypes.values())
 
     def __str__(self) -> str:
         return f"{super().__str__()} available: {self.available},  contact_preference: {self.contact_preference}" \
@@ -56,6 +60,6 @@ class BouncerModel(UserModel):
 
 if __name__ == '__main__':
     for star_rating in BouncerRatingTypes.types():
-        print(star_rating)
+        print(star_rating, star_rating.value)
     print(BouncerRatingTypes.beginner)
     print(type(BouncerRatingTypes.beginner))
