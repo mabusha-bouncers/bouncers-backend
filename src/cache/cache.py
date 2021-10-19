@@ -23,6 +23,7 @@ class CacheManager(Singleton):
         self._cache: Cache = Cache(config=config_instance.cache_dict())
 
     def init_app(self, app):
+        """initializing application to use cache"""
         self._cache.init_app(app=app)
 
     @property
