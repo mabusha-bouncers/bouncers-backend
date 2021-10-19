@@ -10,6 +10,7 @@ __twitter__ = "@blueitserver"
 __github_profile__ = "https://github.com/freelancing-solutions/"
 __licence__ = "MIT"
 
+from enum import Enum
 from typing import List
 
 from google.cloud import ndb
@@ -18,23 +19,31 @@ from src.models.address import AddressModel
 from src.models.basemodel import BaseModel
 
 
-class ContactPrefTypes:
-    cell: str = 'cell'
-    email: str = 'email'
+class ContactPrefTypes(Enum):
+    cell = 'cell'
+    email = 'email'
 
     @classmethod
-    def types(cls) -> List[str]:
-        return [cls.cell, cls.email]
+    def types(cls) -> List:
+        return list(cls)
+
+    @classmethod
+    def values(cls) -> List[str]:
+        return [_pref.value for _pref in cls.types()]
 
 
-class UserType:
+class UserType(Enum):
     admin = 'admin'
     client = 'client'
     bouncer = 'bouncer'
 
     @classmethod
-    def types(cls) -> List[str]:
-        return [cls.admin, cls.client, cls.bouncer]
+    def types(cls) -> List:
+        return list(cls)
+
+    @classmethod
+    def values(cls) -> List[str]:
+        return [_user.value for _user in cls.types()]
 
 
 class UserModel(BaseModel):
@@ -50,14 +59,14 @@ class UserModel(BaseModel):
             user_type: type of user either its admins, clients, or bouncers
             date_created and last_login are auto fields will always hold valid dates
     """
-    uid: str = ndb.StringProperty(indexed=True)
-    names: str = ndb.StringProperty()
-    surname: str = ndb.StringProperty()
-    email: str = ndb.StringProperty()
-    cell: str = ndb.StringProperty()
-    user_type = ndb.StringProperty(default=UserType.bouncer, choices=UserType.types())
-    date_created: date = ndb.DateProperty(auto_now_add=True)
-    last_login: datetime = ndb.DateTimeProperty(auto_now=True)
+    uid: str = ndb.StringProperty(required=True, indexed=True)
+    names: str = ndb.StringProperty(required=True, indexed=True)
+    surname: str = ndb.StringProperty(required=True, indexed=True)
+    email: str = ndb.StringProperty(required=True, indexed=True)
+    cell: str = ndb.StringProperty(required=True, indexed=True)
+    user_type = ndb.StringProperty(default=UserType.bouncer.value, choices=UserType.values(), indexed=True)
+    date_created: date = ndb.DateProperty(auto_now_add=True, indexed=True)
+    last_login: datetime = ndb.DateTimeProperty(auto_now=True, indexed=True)
     address_key: ndb.Key = ndb.KeyProperty(kind=AddressModel)
     contact_preference: str = ndb.StringProperty(default=ContactPrefTypes.cell, choices=ContactPrefTypes.types())
 
