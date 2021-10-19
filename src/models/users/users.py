@@ -6,6 +6,8 @@
 """
 from google.cloud import ndb
 from datetime import date, datetime
+
+from src.models.address import AddressModel
 from src.models.basemodel import BaseModel
 
 
@@ -31,6 +33,11 @@ class UserModel(BaseModel):
     user_type: str = ndb.StringProperty()
     date_created: date = ndb.DateProperty(auto_now_add=True)
     last_login: datetime = ndb.DateTimeProperty(auto_now=True)
+    address_key: ndb.Key = ndb.KeyProperty()
+
+    @property
+    def address(self) -> AddressModel:
+        return self.ndb.Key(self.address_key).get()
 
     def __bool__(self) -> bool:
         return bool(self.uid)
