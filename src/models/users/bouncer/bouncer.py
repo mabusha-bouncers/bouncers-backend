@@ -6,7 +6,6 @@ from google.cloud import ndb
 from src.models.users import UserModel
 
 
-
 class BouncerModel(UserModel):
     """
         **BouncerModel**
@@ -18,4 +17,5 @@ class BouncerModel(UserModel):
     """
     available: bool = ndb.BooleanProperty(default=False)
     contact_preference: str = ndb.StringProperty(default='cell')
-    location_address = ndb.StructuredProperty()
+    location_address = ndb.KeyProperty()
+
