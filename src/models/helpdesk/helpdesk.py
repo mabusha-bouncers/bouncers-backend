@@ -9,8 +9,13 @@
             4. How To (Several ways in which one can enable certain functionality on the applications)
             5. Notifications (setting up & Receiving )
 """
-from datetime import date
+__developer__ = "mobius-crypt"
+__email__ = "mobiusndou@gmail.com"
+__twitter__ = "@blueitserver"
+__github_profile__ = "https://github.com/freelancing-solutions/"
+__licence__ = "MIT"
 
+from datetime import date
 from google.cloud import ndb
 from src.models.basemodel import BaseModel
 
