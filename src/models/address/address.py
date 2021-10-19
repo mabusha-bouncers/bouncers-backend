@@ -10,13 +10,12 @@ __twitter__ = "@blueitserver"
 __github_profile__ = "https://github.com/freelancing-solutions/"
 __licence__ = "MIT"
 
-from enum import Enum
 from typing import List
 from google.cloud import ndb
 from src.models.basemodel import BaseModel
 
 
-class SAProvinceTypes(Enum):
+class SAProvinceTypes:
     limpopo: str = 'limpopo'
     mpumalanga: str = 'mpumalanga'
     north_west: str = 'north_west'
@@ -25,10 +24,12 @@ class SAProvinceTypes(Enum):
     kwazulu_natal: str = 'kwazulu_natal'
     free_state: str = 'free_state'
     eastern_cape: str = 'eastern_cape'
+    western_cape: str = 'western_cape'
 
     @classmethod
-    def types(cls) -> List:
-        return list(SAProvinceTypes)
+    def types(cls) -> List[str]:
+        return sorted([cls.limpopo, cls.mpumalanga, cls.north_west, cls.gauteng, cls.northern_cape, cls.kwazulu_natal,
+                       cls.free_state, cls.eastern_cape, cls.western_cape])
 
 
 class AddressModel(BaseModel):
@@ -40,7 +41,8 @@ class AddressModel(BaseModel):
     address_id: str = ndb.StringProperty(indexed=True, required=True)
     street: str = ndb.StringProperty(indexed=True, required=True)
     city_town: str = ndb.StringProperty(indexed=True, required=True)
-    province = ndb.StringProperty(choices=SAProvinceTypes.types(), indexed=True, required=True)
+    province = ndb.StringProperty(default=SAProvinceTypes.gauteng, choices=SAProvinceTypes.types(), indexed=True,
+                                  required=True)
     country: str = ndb.StringProperty(default='south africa', required=True)
     postal_code: str = ndb.StringProperty(indexed=True, required=True)
 
@@ -56,5 +58,5 @@ class AddressModel(BaseModel):
 
 
 if __name__ == '__main__':
-    for province in SAProvinceTypes:
+    for province in SAProvinceTypes.types():
         print(province)
