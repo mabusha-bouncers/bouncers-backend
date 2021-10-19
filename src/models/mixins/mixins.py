@@ -68,7 +68,6 @@ class AmountMixin(BaseModel):
         return bool(self.amount_cents) and bool(self.currency)
 
 
-
 class UserMixin(BaseModel):
     """
         **Class UserMixin**
