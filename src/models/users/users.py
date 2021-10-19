@@ -47,7 +47,7 @@ class UserModel(BaseModel):
     surname: str = ndb.StringProperty()
     email: str = ndb.StringProperty()
     cell: str = ndb.StringProperty()
-    user_type: str = ndb.StringProperty(choices=UserType.types())
+    user_type = ndb.StringProperty(choices=UserType.types())
     date_created: date = ndb.DateProperty(auto_now_add=True)
     last_login: datetime = ndb.DateTimeProperty(auto_now=True)
     address_key: ndb.Key = ndb.KeyProperty(kind=AddressModel)
