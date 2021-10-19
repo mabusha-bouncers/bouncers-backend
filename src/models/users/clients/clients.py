@@ -1,5 +1,5 @@
 """
-    Clients Model
+    Clients Model  / Customers
         extends userModel and add client specific data
 """
 from google.cloud import ndb
