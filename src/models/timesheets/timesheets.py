@@ -19,6 +19,9 @@ from src.models.mixins.mixins import AmountMixin
 
 
 class DaysOfWeekType:
+    """
+    Enumerator for DaysOfWeek
+    """
     sunday: int = 0
     monday: int = 1
     tuesday: int = 2
