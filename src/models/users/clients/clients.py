@@ -88,6 +88,12 @@ class ClientFeedbackModel(BaseModel):
     feedback: str = ndb.StringProperty()
     rating: int = ndb.IntegerProperty(default=ClientRatingTypes.not_rated.value, choices=ClientRatingTypes.values())
 
+    def __str__(self) -> str:
+        return f"<ClientFeedback: rating: {self.rating}, feedback: {self.feedback}"
+
+    def __bool__(self) -> bool:
+        return bool(self.client_uid) and bool(self.bouncer_uid)
+
 
 if __name__ == '__main__':
     print(ClientTypes.types())
