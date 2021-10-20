@@ -22,7 +22,8 @@ from src.models.mixins.mixins import AmountMixin
 
 class DaysOfWeekType(Enum):
     """
-    Enumerator for DaysOfWeek
+        **DaysOfWeekType**
+            Enumerator for DaysOfWeek
     """
     sunday = 0
     monday = 1
@@ -53,6 +54,7 @@ class TimeSheetModel(BaseModel):
             time_of_duty: date -> the date the bouncer went of duty
             time_worked_hours: integer -> total time worked in hours
             hourly_rate: int (money in rands) -> hourly rate for bouncer
+            time_sheet_paid: bool -> False as default True when time worked has been paid
     """
     uid: str = ndb.StringProperty(indexed=True)
     day_of_week: int = ndb.IntegerProperty(choices=DaysOfWeekType.values(), default=DaysOfWeekType.monday.value)
@@ -61,6 +63,7 @@ class TimeSheetModel(BaseModel):
     time_of_duty: datetime = ndb.DateTimeProperty()
     time_worked_hours: int = ndb.IntegerProperty()
     hourly_rate: int = ndb.IntegerProperty()
+    time_sheet_paid: bool = ndb.BooleanProperty(default=False)
 
     #   TODO add overtime rates
 
