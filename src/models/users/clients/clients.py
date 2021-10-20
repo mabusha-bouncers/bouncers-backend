@@ -10,13 +10,37 @@ __licence__ = "MIT"
 
 from enum import Enum
 from typing import List
-
 from google.cloud import ndb
 
+from src.models.basemodel import BaseModel
 from src.models.users import UserModel
 
 
+class ClientRatingTypes(Enum):
+    """
+        **Class ClientRatingTypes**
+            allows bouncer's and security guards to leave a rating for the client
+    """
+    not_rated = 0
+    poor = 1
+    good = 2
+    best = 3
+    very_best = 4
+
+    @classmethod
+    def types(cls) -> List:
+        return list(cls)
+
+    @classmethod
+    def values(cls) -> List[int]:
+        return [_rating.value for _rating in cls.types()]
+
+
 class ClientTypes(Enum):
+    """
+        **ClientTypes**
+            Enum for types of clients used in the application
+    """
     business = 'business'
     personal = 'personal'
 
@@ -51,6 +75,16 @@ class ClientModel(UserModel):
 
     def __bool__(self) -> bool:
         return super().__bool__()
+
+
+class ClientFeedbackModel(BaseModel):
+    """
+        **Class ClientFeedbackModel**
+            allows bouncers & security to leave feedback after each job,
+            feedback is then averaged and then an overall score is saved for the client
+    """
+    pass
+
 
 
 if __name__ == '__main__':
