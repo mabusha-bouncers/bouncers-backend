@@ -13,7 +13,6 @@ from enum import Enum
 from typing import List
 
 from google.cloud import ndb
-from google.cloud.ndb import DateTimeProperty
 
 from src.config import config_instance
 from src.models.basemodel import BaseModel
