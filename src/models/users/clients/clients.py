@@ -85,6 +85,8 @@ class ClientFeedbackModel(BaseModel):
     """
     client_uid: str = ndb.StringProperty()
     bouncer_uid: str = ndb.StringProperty()
+    feedback: str = ndb.StringProperty()
+    rating: int = ndb.IntegerProperty(default=ClientRatingTypes.not_rated.value, choices=ClientRatingTypes.values())
 
 
 if __name__ == '__main__':
