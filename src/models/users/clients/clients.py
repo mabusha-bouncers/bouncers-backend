@@ -83,7 +83,8 @@ class ClientFeedbackModel(BaseModel):
             allows bouncers & security to leave feedback after each job,
             feedback is then averaged and then an overall score is saved for the client
     """
-    pass
+    client_uid: str = ndb.StringProperty()
+    bouncer_uid: str = ndb.StringProperty()
 
 
 if __name__ == '__main__':
