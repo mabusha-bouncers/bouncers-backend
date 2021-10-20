@@ -31,7 +31,7 @@ class BouncerRatingTypes(Enum):
         return list(cls)
 
     @classmethod
-    def values(cls) -> List:
+    def values(cls) -> List[int]:
         return [rating.value for rating in cls.types()]
 
 

@@ -86,6 +86,5 @@ class ClientFeedbackModel(BaseModel):
     pass
 
 
-
 if __name__ == '__main__':
     print(ClientTypes.types())
