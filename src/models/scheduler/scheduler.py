@@ -54,3 +54,4 @@ class BouncerScheduled(BaseModel):
     """this schedules a bouncer to a specific schedule"""
     schedule_id: str = ndb.StringProperty(required=True)
     uid: str = ndb.StringProperty(required=True)
+
