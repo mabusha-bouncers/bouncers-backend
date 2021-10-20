@@ -35,6 +35,25 @@ class BouncerRatingTypes(Enum):
         return [rating.value for rating in cls.types()]
 
 
+class SecurityGradesType(Enum):
+    """
+        PSIRA Security Gradcs
+    """
+    grade_a = 'a'
+    grade_b = 'b'
+    grade_c = 'c'
+    grade_d = 'd'
+    grade_e = 'e'
+
+    @classmethod
+    def types(cls) -> List:
+        return list(cls)
+
+    @classmethod
+    def values(cls) -> List[str]:
+        return [_grade.value for _grade in cls.types()]
+
+
 class BouncerModel(UserModel):
     """
         **BouncerModel**
@@ -46,7 +65,8 @@ class BouncerModel(UserModel):
     """
     available: bool = ndb.BooleanProperty(default=False)
     certified: bool = ndb.BooleanProperty(default=False)
-    security_grade: str = ndb.StringProperty(default=None)
+    security_grade: str = ndb.StringProperty(default=SecurityGradesType.grade_e.value,
+                                             choices=SecurityGradesType.values())
     years_experience: int = ndb.IntegerProperty(default=0)
     rating: int = ndb.IntegerProperty(default=BouncerRatingTypes.not_rated.value,  choices=BouncerRatingTypes.values())
 
