@@ -37,7 +37,8 @@ class BouncerRatingTypes(Enum):
 
 class SecurityGradesType(Enum):
     """
-        PSIRA Security Gradcs
+        **Class SecurityGradesType**
+            PSIRA Security Gradc
     """
     grade_a = 'a'
     grade_b = 'b'
@@ -81,5 +82,6 @@ class BouncerModel(UserModel):
 if __name__ == '__main__':
     for star_rating in BouncerRatingTypes.types():
         print(star_rating, star_rating.value)
+
     print(BouncerRatingTypes.beginner)
     print(type(BouncerRatingTypes.beginner))
