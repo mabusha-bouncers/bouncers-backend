@@ -8,9 +8,12 @@ __twitter__ = "@blueitserver"
 __github_profile__ = "https://github.com/freelancing-solutions/"
 __licence__ = "MIT"
 
+from datetime import date
 from enum import Enum, auto, IntEnum
 from typing import List
 from google.cloud import ndb
+
+from src.models.basemodel import BaseModel
 from src.models.users import UserModel
 
 
@@ -77,6 +80,22 @@ class BouncerModel(UserModel):
 
     def __bool__(self) -> bool:
         return super().__bool__()
+
+
+class BouncerFeedbackModel(BaseModel):
+    """
+        **BouncerFeedbackModel**
+            allows clients to leave feedback about bouncers & security once the job
+            is completed.
+
+        `PARAMETERS`
+    """
+    bouncer_uid: str = ndb.StringProperty()
+    client_uid: str = ndb.StringProperty()
+    feedback: str = ndb.StringProperty()
+    rating: int = ndb.IntegerProperty(default=BouncerRatingTypes.not_rated.value, choices=BouncerRatingTypes.values())
+    date_created: date = ndb.DateProperty(auto_now_add=True)
+    date_updated: date = ndb.DateProperty(auto_now=True)
 
 
 if __name__ == '__main__':
