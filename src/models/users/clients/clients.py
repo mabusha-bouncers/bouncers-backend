@@ -90,6 +90,7 @@ class ClientFeedbackModel(BaseModel):
     feedback: str = ndb.StringProperty()
     rating: int = ndb.IntegerProperty(default=ClientRatingTypes.not_rated.value, choices=ClientRatingTypes.values())
     date_created: date = ndb.DateProperty(auto_now_add=True)
+    date_updated: date = ndb.DateProperty(auto_now=True)
 
     def __str__(self) -> str:
         return f"<ClientFeedback: rating: {self.rating}, feedback: {self.feedback}"
