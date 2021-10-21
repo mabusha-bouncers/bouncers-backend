@@ -90,13 +90,13 @@ class BouncerModel(UserModel):
                 BouncerFeedbackModel.bouncer_uid == self.uid)]))
 
     @property
-    def rating_words(self) -> str:
+    def rating_in_words(self) -> str:
         """bouncer rating in words"""
         return [_rating.name for _rating in BouncerRatingTypes.types() if _rating == self.rating][0]
 
     def __str__(self) -> str:
         return f"{super().__str__()} available: {self.available},  contact_preference: {self.contact_preference}" \
-               f"Grade: {self.security_grade}, Rating: {self.rating_words}"
+               f"Grade: {self.security_grade}, Rating: {self.rating_in_words}"
 
     def __bool__(self) -> bool:
         return super().__bool__()
