@@ -83,7 +83,13 @@ class ClientFeedbackModel(BaseModel):
         **Class ClientFeedbackModel**
             allows bouncers & security to leave feedback after each job,
             feedback is then averaged and then an overall score is saved for the client
-
+        `PARAMETERS`
+            client_uid: str = (uid) user id of client
+            bouncer_uid: str = (uid) user id of bouncer
+            feedback: str = actual feedback if any
+            rating: int = rating from 0 to 4 (zero bad and 4 being good)
+            date_created: date = auto always has the date the feedback was left
+            date_updated: date = if updated will carry the date of the last update
     """
     client_uid: str = ndb.StringProperty()
     bouncer_uid: str = ndb.StringProperty()
