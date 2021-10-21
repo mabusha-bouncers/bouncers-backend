@@ -25,6 +25,7 @@ class ClientRatingTypes(Enum):
     """
         **Class ClientRatingTypes**
             allows bouncer's and security guards to leave a rating for the client
+
     """
     not_rated = 0
     poor = 1
