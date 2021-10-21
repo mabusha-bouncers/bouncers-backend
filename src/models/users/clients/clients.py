@@ -14,6 +14,7 @@ from typing import List
 from google.cloud import ndb
 
 from src.models.basemodel import BaseModel
+from src.models.mixins.mixins import FeedbackMixin
 from src.models.users import UserModel
 
 
@@ -78,7 +79,7 @@ class ClientModel(UserModel):
         return super().__bool__()
 
 
-class ClientFeedbackModel(BaseModel):
+class ClientFeedbackModel(FeedbackMixin):
     """
         **Class ClientFeedbackModel**
             allows bouncers & security to leave feedback after each job,
@@ -91,18 +92,21 @@ class ClientFeedbackModel(BaseModel):
             date_created: date = auto always has the date the feedback was left
             date_updated: date = if updated will carry the date of the last update
     """
-    client_uid: str = ndb.StringProperty()
-    bouncer_uid: str = ndb.StringProperty()
-    feedback: str = ndb.StringProperty()
     rating: int = ndb.IntegerProperty(default=ClientRatingTypes.not_rated.value, choices=ClientRatingTypes.values())
-    date_created: date = ndb.DateProperty(auto_now_add=True)
-    date_updated: date = ndb.DateProperty(auto_now=True)
+
+    @property
+    def rating_in_words(self) -> str:
+        """
+            **rating_in_words**
+                returns rating in words
+        """
+        return [_rating.name for _rating in ClientRatingTypes if _rating.value == self.rating][0]
 
     def __str__(self) -> str:
-        return f"<ClientFeedback: rating: {self.rating}, feedback: {self.feedback}"
+        return f"<ClientFeedback: rating: {self.rating_in_words}, feedback: {self.feedback}"
 
     def __bool__(self) -> bool:
-        return bool(self.client_uid) and bool(self.bouncer_uid)
+        return super().__bool__()
 
 
 if __name__ == '__main__':
