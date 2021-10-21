@@ -125,4 +125,7 @@ class ClientFeedbackModel(FeedbackMixin):
 
 
 if __name__ == '__main__':
-    print(ClientTypes.types())
+    for client in ClientRatingTypes.types():
+        assert isinstance(client.value, int)
+        assert isinstance(client.name, str)
+        print(client.name, client.value)
