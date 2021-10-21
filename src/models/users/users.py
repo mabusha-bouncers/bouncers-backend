@@ -21,6 +21,7 @@ from src.models.mixins.mixins import UserMixin
 
 
 class ContactPrefTypes(Enum):
+    """Contact Preferences Type"""
     cell = 'cell'
     email = 'email'
 
@@ -34,6 +35,9 @@ class ContactPrefTypes(Enum):
 
 
 class UserType(Enum):
+    """**Class UserTypes
+        types of the users to use the application
+    """
     admin = 'admin'
     client = 'client'
     bouncer = 'bouncer'
