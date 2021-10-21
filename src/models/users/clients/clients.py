@@ -8,6 +8,7 @@ __twitter__ = "@blueitserver"
 __github_profile__ = "https://github.com/freelancing-solutions/"
 __licence__ = "MIT"
 
+from datetime import date
 from enum import Enum
 from typing import List
 from google.cloud import ndb
@@ -87,6 +88,7 @@ class ClientFeedbackModel(BaseModel):
     bouncer_uid: str = ndb.StringProperty()
     feedback: str = ndb.StringProperty()
     rating: int = ndb.IntegerProperty(default=ClientRatingTypes.not_rated.value, choices=ClientRatingTypes.values())
+    date_created: date = ndb.DateProperty(auto_now_add=True)
 
     def __str__(self) -> str:
         return f"<ClientFeedback: rating: {self.rating}, feedback: {self.feedback}"
