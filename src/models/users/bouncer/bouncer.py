@@ -8,14 +8,13 @@ __twitter__ = "@blueitserver"
 __github_profile__ = "https://github.com/freelancing-solutions/"
 __licence__ = "MIT"
 
-from datetime import date
-from enum import Enum, auto, IntEnum
+from enum import Enum
 from statistics import mean
 from typing import List
+
 from google.cloud import ndb
 
 from src.cache import app_cache
-from src.models.basemodel import BaseModel
 from src.models.context import get_client
 from src.models.mixins.mixins import FeedbackMixin
 from src.models.users import UserModel
@@ -126,6 +125,7 @@ if __name__ == '__main__':
     values = BouncerRatingTypes.values()
     for idx, star_rating in enumerate(BouncerRatingTypes.types()):
         assert values[idx] == star_rating.value
+        assert isinstance(star_rating.name, str)
 
     print(BouncerRatingTypes.beginner)
     print(type(BouncerRatingTypes.beginner))
