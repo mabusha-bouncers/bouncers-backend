@@ -81,10 +81,13 @@ class BouncerModel(UserModel):
     @property
     @app_cache.cache.memoize(timeout=return_ttl('short'))
     def rating(self) -> int:
-        """average rating based on feedback left about the bouncer"""
+        """
+            **rating**
+                calculates average rating based on feedback left about the bouncer
+        """
         with get_client().context():
-            return mean([feedback.rating for feedback in BouncerFeedbackModel.query(
-                BouncerFeedbackModel.bouncer_uid == self.uid)])
+            return int(mean([feedback.rating for feedback in BouncerFeedbackModel.query(
+                BouncerFeedbackModel.bouncer_uid == self.uid)]))
 
     @property
     def rating_words(self) -> str:
