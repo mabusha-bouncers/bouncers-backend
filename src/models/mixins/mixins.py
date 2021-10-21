@@ -77,6 +77,7 @@ class UserMixin(BaseModel):
             Passwords Hash are handled by werkzeug.security using the method : "pbkdf2:sha256"
 
         **Class Properties**
+
             1. Property: Email : String -> email password
             2. Property: Password : String -> User Password - will be converted to a password hash
     """
