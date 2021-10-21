@@ -97,7 +97,7 @@ class UserMixin(BaseModel):
         return f"<User {self.email}"
 
     def __bool__(self) -> bool:
-        return bool(self.email)
+        return bool(self.uid) and bool(self.email)
 
 
 class FeedbackMixin(BaseModel):

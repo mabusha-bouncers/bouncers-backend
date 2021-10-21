@@ -78,7 +78,7 @@ class UserModel(UserMixin):
         return self.ndb.Key(self.address_key).get()
 
     def __bool__(self) -> bool:
-        return bool(self.uid)
+        return super().__bool__()
 
     def __str__(self) -> str:
         return f"{super().__str__()} {self.user_type} " \
