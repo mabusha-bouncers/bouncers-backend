@@ -86,7 +86,7 @@ class ClientModel(UserModel):
     @property
     def rating_in_words(self) -> str:
         return [_rating.name for _rating in ClientRatingTypes.types() if _rating.value == self.rating][0]
-    
+
     def __str__(self) -> str:
         return f"{super().__str__()} client_type: {self.client_type}, Notes: {self.notes}"
 
@@ -115,7 +115,7 @@ class ClientFeedbackModel(FeedbackMixin):
             **rating_in_words**
                 returns rating in words
         """
-        return [_rating.name for _rating in ClientRatingTypes if _rating.value == self.rating][0]
+        return [_rating.name for _rating in ClientRatingTypes.types() if _rating.value == self.rating][0]
 
     def __str__(self) -> str:
         return f"<ClientFeedback: rating: {self.rating_in_words}, feedback: {self.feedback}"
