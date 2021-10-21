@@ -20,6 +20,12 @@ from src.models.basemodel import BaseModel
 
 
 class DailySlotsTypes(Enum):
+    """
+    **Class DailySlotsTypes**
+        there are three divisions of 8 hours each in a single day for which a user
+
+
+    """
     morning = 'morning'
     evening = 'evening'
     late = 'late'
@@ -41,8 +47,10 @@ class SchedulerModel(BaseModel):
             Areas, once Guards and Bouncers are available then Clients can Book them
 
         `PARAMETERS`
-            today datetime -> Indicates the time the schedule started running
-                                        # Note Schedules are ran for 8 hours at a time
+            schedule_id: str -> Indicates the time the schedule started running Note Schedules are ran for 8 hours at a time
+            schedule_day: date ->
+            time_slot: str ->
+            location_address_id: str -> unique id for the address field
     """
     schedule_id: str = ndb.StringProperty(required=True)
     scheduled_day: date = ndb.DateProperty(auto_now_add=True)
@@ -51,7 +59,14 @@ class SchedulerModel(BaseModel):
 
 
 class BouncerScheduled(BaseModel):
-    """this schedules a bouncer to a specific schedule"""
+    """
+        **Class BouncerScheduled**
+            this schedules a bouncer to a specific schedule
+
+        `PARAMETERS`
+            scheduled_id: str ->
+            uid: str ->
+    """
     schedule_id: str = ndb.StringProperty(required=True)
     uid: str = ndb.StringProperty(required=True)
 
