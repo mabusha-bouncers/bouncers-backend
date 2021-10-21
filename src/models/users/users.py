@@ -17,6 +17,7 @@ from google.cloud import ndb
 from datetime import date, datetime
 from src.models.address import AddressModel
 from src.models.basemodel import BaseModel
+from src.models.mixins.mixins import UserMixin
 
 
 class ContactPrefTypes(Enum):
@@ -46,7 +47,7 @@ class UserType(Enum):
         return [_user.value for _user in cls.types()]
 
 
-class UserModel(BaseModel):
+class UserModel(UserMixin):
     """
         **Class UserModel**
             User Authentication and Authorization
@@ -59,10 +60,8 @@ class UserModel(BaseModel):
             user_type: type of user either its admins, clients, or bouncers
             date_created and last_login are auto fields will always hold valid dates
     """
-    uid: str = ndb.StringProperty(required=True, indexed=True)
     names: str = ndb.StringProperty(required=True, indexed=True)
     surname: str = ndb.StringProperty(required=True, indexed=True)
-    email: str = ndb.StringProperty(required=True, indexed=True)
     cell: str = ndb.StringProperty(required=True, indexed=True)
     user_type = ndb.StringProperty(default=UserType.bouncer.value, choices=UserType.values(), indexed=True)
     date_created: date = ndb.DateProperty(auto_now_add=True, indexed=True)

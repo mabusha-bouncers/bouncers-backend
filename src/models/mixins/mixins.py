@@ -80,6 +80,7 @@ class UserMixin(BaseModel):
             1. Property: Email : String -> email password
             2. Property: Password : String -> User Password - will be converted to a password hash
     """
+    uid: str = ndb.StringProperty(required=True, indexed=True)
     email: str = ndb.StringProperty(validator=property_.set_email)
     password: str = ndb.StringProperty(validator=property_.set_password)
 
