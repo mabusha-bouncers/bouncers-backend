@@ -10,12 +10,16 @@ __licence__ = "MIT"
 
 from datetime import date
 from enum import Enum
+from statistics import mean
 from typing import List
 from google.cloud import ndb
 
+from src.cache import app_cache
 from src.models.basemodel import BaseModel
+from src.models.context import get_client
 from src.models.mixins.mixins import FeedbackMixin
 from src.models.users import UserModel
+from src.utils.utils import return_ttl
 
 
 class ClientRatingTypes(Enum):
@@ -72,6 +76,17 @@ class ClientModel(UserModel):
     description: str = ndb.StringProperty()
     notes: str = ndb.StringProperty()
 
+    @property
+    @app_cache.cache.memoize(timeout=return_ttl('short'))
+    def rating(self):
+        with get_client().context():
+            return int(mean([feedback.rating for feedback in ClientFeedbackModel.query(
+                ClientFeedbackModel.client_uid == self.uid)]))
+
+    @property
+    def rating_in_words(self) -> str:
+        return [_rating.name for _rating in ClientRatingTypes.types() if _rating.value == self.rating][0]
+    
     def __str__(self) -> str:
         return f"{super().__str__()} client_type: {self.client_type}, Notes: {self.notes}"
 
