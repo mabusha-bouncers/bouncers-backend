@@ -10,13 +10,13 @@ __twitter__ = "@blueitserver"
 __github_profile__ = "https://github.com/freelancing-solutions/"
 __licence__ = "MIT"
 
+from datetime import date, datetime
 from enum import Enum
 from typing import List
 
 from google.cloud import ndb
-from datetime import date, datetime
+
 from src.models.address import AddressModel
-from src.models.basemodel import BaseModel
 from src.models.mixins.mixins import UserMixin
 
 
