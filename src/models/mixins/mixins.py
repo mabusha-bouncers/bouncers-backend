@@ -7,6 +7,8 @@ __twitter__ = "@blueitserver"
 __github_profile__ = "https://github.com/freelancing-solutions/"
 __licence__ = "MIT"
 
+from datetime import date
+
 from src.models.basemodel import BaseModel
 from google.cloud import ndb
 from src.config import config_instance
@@ -95,3 +97,18 @@ class UserMixin(BaseModel):
 
     def __bool__(self) -> bool:
         return bool(self.email)
+
+
+class FeedbackMixin(BaseModel):
+    """
+        **FeedbackMixin**
+            mixin class for client and bouncer feedback models
+    """
+    client_uid: str = ndb.StringProperty()
+    bouncer_uid: str = ndb.StringProperty()
+    feedback: str = ndb.StringProperty()
+    date_created: date = ndb.DateProperty(auto_now_add=True)
+    date_updated: date = ndb.DateProperty(auto_now=True)
+
+    def __bool__(self) -> bool:
+        return bool(self.client_uid) and bool(self.bouncer_uid)
