@@ -10,12 +10,16 @@ __licence__ = "MIT"
 
 from datetime import date
 from enum import Enum, auto, IntEnum
+from statistics import mean
 from typing import List
 from google.cloud import ndb
 
+from src.cache import app_cache
 from src.models.basemodel import BaseModel
+from src.models.context import get_client
 from src.models.mixins.mixins import FeedbackMixin
 from src.models.users import UserModel
+from src.utils.utils import return_ttl
 
 
 class BouncerRatingTypes(Enum):
@@ -73,11 +77,23 @@ class BouncerModel(UserModel):
     security_grade: str = ndb.StringProperty(default=SecurityGradesType.grade_e.value,
                                              choices=SecurityGradesType.values())
     years_experience: int = ndb.IntegerProperty(default=0)
-    rating: int = ndb.IntegerProperty(default=BouncerRatingTypes.not_rated.value,  choices=BouncerRatingTypes.values())
+
+    @property
+    @app_cache.cache.memoize(timeout=return_ttl('short'))
+    def rating(self) -> int:
+        """average rating based on feedback left about the bouncer"""
+        with get_client().context():
+            return mean([feedback.rating for feedback in BouncerFeedbackModel.query(
+                BouncerFeedbackModel.bouncer_uid == self.uid)])
+
+    @property
+    def rating_words(self) -> str:
+        """bouncer rating in words"""
+        return [_rating.name for _rating in BouncerRatingTypes.types() if _rating == self.rating][0]
 
     def __str__(self) -> str:
         return f"{super().__str__()} available: {self.available},  contact_preference: {self.contact_preference}" \
-               f"Grade: {self.security_grade}, Rating: {self.rating}"
+               f"Grade: {self.security_grade}, Rating: {self.rating_words}"
 
     def __bool__(self) -> bool:
         return super().__bool__()
