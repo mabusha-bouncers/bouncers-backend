@@ -14,6 +14,7 @@ from typing import List
 from google.cloud import ndb
 
 from src.models.basemodel import BaseModel
+from src.models.mixins.mixins import FeedbackMixin
 from src.models.users import UserModel
 
 
@@ -82,7 +83,7 @@ class BouncerModel(UserModel):
         return super().__bool__()
 
 
-class BouncerFeedbackModel(BaseModel):
+class BouncerFeedbackModel(FeedbackMixin):
     """
         **BouncerFeedbackModel**
             allows clients to leave feedback about bouncers & security once the job
@@ -90,12 +91,15 @@ class BouncerFeedbackModel(BaseModel):
 
         `PARAMETERS`
     """
-    bouncer_uid: str = ndb.StringProperty()
-    client_uid: str = ndb.StringProperty()
-    feedback: str = ndb.StringProperty()
     rating: int = ndb.IntegerProperty(default=BouncerRatingTypes.not_rated.value, choices=BouncerRatingTypes.values())
-    date_created: date = ndb.DateProperty(auto_now_add=True)
-    date_updated: date = ndb.DateProperty(auto_now=True)
+
+    # noinspection PyPropertyDefinition
+    @property
+    def rating_in_words(self) -> str:
+        return [_rating.name for _rating in BouncerRatingTypes.types() if _rating.value == self.rating][0]
+
+    def __str__(self) -> str:
+        return f"<BouncerFeedback: rating: {self.rating_in_words}, feedback: {self.feedback}"
 
 
 if __name__ == '__main__':
