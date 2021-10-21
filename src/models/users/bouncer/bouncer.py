@@ -122,8 +122,10 @@ class BouncerFeedbackModel(FeedbackMixin):
 
 
 if __name__ == '__main__':
-    for star_rating in BouncerRatingTypes.types():
-        print(star_rating, star_rating.value)
+    """just in time test cases"""
+    values = BouncerRatingTypes.values()
+    for idx, star_rating in enumerate(BouncerRatingTypes.types()):
+        assert values[idx] == star_rating.value
 
     print(BouncerRatingTypes.beginner)
     print(type(BouncerRatingTypes.beginner))
