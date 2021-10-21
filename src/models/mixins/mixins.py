@@ -103,6 +103,12 @@ class FeedbackMixin(BaseModel):
     """
         **FeedbackMixin**
             mixin class for client and bouncer feedback models
+        `PARAMETERS`
+            client_uid: str = unique id for client
+            bouncer_uid: str = unique id for bouncer
+            feedback: str = feedback text if any
+            date_updated: date = auto field
+            date_created: date = auto field
     """
     client_uid: str = ndb.StringProperty()
     bouncer_uid: str = ndb.StringProperty()
