@@ -81,7 +81,7 @@ class UserModel(UserMixin):
         return bool(self.uid)
 
     def __str__(self) -> str:
-        return f"<User: user_type: {self.user_type} " \
+        return f"{super().__str__()} {self.user_type} " \
                f"names: {self.names}, surname: {self.surname}, email: {self.email}, cell: {self.cell}"
 
 

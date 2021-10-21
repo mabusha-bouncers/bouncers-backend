@@ -94,7 +94,7 @@ class UserMixin(BaseModel):
         return True
 
     def __str__(self) -> str:
-        return "<User {}".format(self.email)
+        return f"<User {self.email}"
 
     def __bool__(self) -> bool:
         return bool(self.email)
