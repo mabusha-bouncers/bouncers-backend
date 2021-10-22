@@ -63,6 +63,7 @@ class UserModel(UserMixin):
             cell: users cell number
             user_type: type of user either its admins, clients, or bouncers
             date_created and last_login are auto fields will always hold valid dates
+            contact_preference -: str
     """
     names: str = ndb.StringProperty(required=True, indexed=True)
     surname: str = ndb.StringProperty(required=True, indexed=True)
