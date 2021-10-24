@@ -119,6 +119,13 @@ class BouncerFeedbackModel(FeedbackMixin):
     def __str__(self) -> str:
         return f"<BouncerFeedback: rating: {self.rating_in_words}, feedback: {self.feedback}"
 
+    def __bool__(self) -> bool:
+        """
+
+        :return:
+        """
+        return super().__bool__()
+
 
 if __name__ == '__main__':
     """just in time test cases"""

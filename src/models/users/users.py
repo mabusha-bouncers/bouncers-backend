@@ -10,6 +10,7 @@ __twitter__ = "@blueitserver"
 __github_profile__ = "https://github.com/freelancing-solutions/"
 __licence__ = "MIT"
 
+from abc import abstractmethod
 from datetime import date, datetime
 from enum import Enum
 from typing import List
@@ -77,6 +78,16 @@ class UserModel(UserMixin):
     @property
     def address(self) -> AddressModel:
         return self.ndb.Key(self.address_key).get()
+
+    @abstractmethod
+    def rating(self):
+        """every user instance must implement the rating method"""
+        raise NotImplementedError
+
+    @abstractmethod
+    def rating_in_words(self) -> str:
+        """user instance must have a rating in words method"""
+        raise NotImplementedError
 
     def __bool__(self) -> bool:
         return super().__bool__()
