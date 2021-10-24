@@ -31,6 +31,7 @@ def use_context(func: Callable):
         **use_context**
             will insert ndb context for working with ndb. Cloud Databases
         **NOTE**
+
             functions/ methods needs to be wrapped by this wrapper when they interact with the database somehow
 
     :param func: function to wrap
