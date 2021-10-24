@@ -73,7 +73,7 @@ class UserModel(UserMixin):
     date_created: date = ndb.DateProperty(auto_now_add=True, indexed=True)
     last_login: datetime = ndb.DateTimeProperty(auto_now=True, indexed=True)
     address_key: ndb.Key = ndb.KeyProperty(kind=AddressModel)
-    contact_preference: str = ndb.StringProperty(default=ContactPrefTypes.cell, choices=ContactPrefTypes.types())
+    contact_preference: str = ndb.StringProperty(default=ContactPrefTypes.cell.value, choices=ContactPrefTypes.values())
 
     @property
     def address(self) -> AddressModel:
@@ -90,9 +90,11 @@ class UserModel(UserMixin):
         raise NotImplementedError
 
     def __bool__(self) -> bool:
+        """returns true if this is a valid user"""
         return super().__bool__()
 
     def __str__(self) -> str:
+        """returns the user representation in string format"""
         return f"{super().__str__()} {self.user_type} " \
                f"names: {self.names}, surname: {self.surname}, email: {self.email}, cell: {self.cell}"
 
