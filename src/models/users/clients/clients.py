@@ -144,5 +144,3 @@ if __name__ == '__main__':
         assert isinstance(client.value, int)
         assert isinstance(client.name, str)
         print(client.name, client.value)
-
-
