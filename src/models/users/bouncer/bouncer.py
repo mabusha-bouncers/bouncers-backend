@@ -8,15 +8,16 @@ __twitter__ = "@blueitserver"
 __github_profile__ = "https://github.com/freelancing-solutions/"
 __licence__ = "MIT"
 
+from abc import ABC
 from enum import Enum
 from statistics import mean
-from typing import List
+from typing import List, Optional, Generator
 
 from google.cloud import ndb
 
 from src.cache import app_cache
 from src.models.context import get_client
-from src.models.mixins.mixins import FeedbackMixin
+from src.models.mixins.mixins import FeedbackMixin, AmountMixin
 from src.models.users import UserModel
 from src.utils.utils import return_ttl
 
@@ -93,6 +94,13 @@ class BouncerModel(UserModel):
         """bouncer rating in words"""
         return [_rating.name for _rating in BouncerRatingTypes.types() if _rating == self.rating][0]
 
+    def compute_pay(self) -> AmountMixin:
+        """
+            **compute_pay**
+                computes the pay of a bouncer at any specific time
+        """
+        pass
+
     def __str__(self) -> str:
         return f"{super().__str__()} available: {self.available},  contact_preference: {self.contact_preference}" \
                f"Grade: {self.security_grade}, Rating: {self.rating_in_words}"
@@ -101,7 +109,7 @@ class BouncerModel(UserModel):
         return super().__bool__()
 
 
-class BouncerFeedbackModel(FeedbackMixin):
+class BouncerFeedbackModel(FeedbackMixin, ABC):
     """
         **BouncerFeedbackModel**
             allows clients to leave feedback about bouncers & security once the job
@@ -125,6 +133,17 @@ class BouncerFeedbackModel(FeedbackMixin):
         :return:
         """
         return super().__bool__()
+
+    def feedback_list(self) -> Optional[Generator]:
+        """
+
+        :return:
+        """
+        if not self.bouncer_uid:
+            return
+        with get_client().context():
+            return (feedback.to_dict() for feedback in
+                    BouncerFeedbackModel.query(BouncerFeedbackModel.bouncer_uid == self.bouncer_uid))
 
 
 if __name__ == '__main__':

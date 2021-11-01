@@ -8,9 +8,10 @@ __twitter__ = "@blueitserver"
 __github_profile__ = "https://github.com/freelancing-solutions/"
 __licence__ = "MIT"
 
+from abc import ABC
 from enum import Enum
 from statistics import mean
-from typing import List
+from typing import List, Generator, Optional
 
 from google.cloud import ndb
 
@@ -94,7 +95,7 @@ class ClientModel(UserModel):
         return super().__bool__()
 
 
-class ClientFeedbackModel(FeedbackMixin):
+class ClientFeedbackModel(FeedbackMixin, ABC):
     """
         **Class ClientFeedbackModel**
             allows bouncers & security to leave feedback after each job,
@@ -123,9 +124,25 @@ class ClientFeedbackModel(FeedbackMixin):
     def __bool__(self) -> bool:
         return super().__bool__()
 
+    def feedback_list(self) -> Optional[Generator]:
+        """
+            **feedback_list**
+                this generator always contains the present list of feedbacks this client has
+
+        :param client_id:
+        :return:
+        """
+        if not self.client_uid:
+            return
+        with get_client().context():
+            return (feedback.to_dict() for feedback in
+                    ClientFeedbackModel.query(ClientFeedbackModel.client_uid == self.client_uid))
+
 
 if __name__ == '__main__':
     for client in ClientRatingTypes.types():
         assert isinstance(client.value, int)
         assert isinstance(client.name, str)
         print(client.name, client.value)
+
+
