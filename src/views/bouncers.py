@@ -1,6 +1,8 @@
 """
 **bouncers view**
 """
+from typing import Generator
+
 from flask import jsonify
 from google.cloud import ndb
 
@@ -9,11 +11,11 @@ from src.views import ViewModel
 from src.models.users import BouncerModel
 
 
-class BouncersView(ViewModel):
+class BouncerView(ViewModel):
     """this view will handle bouncers API endpoints"""
     # TODO do not forget to add middlewares here
     def __init__(self):
-        super(BouncersView, self).__init__()
+        super(BouncerView, self).__init__()
 
     @staticmethod
     def get(uid: str):
@@ -83,3 +85,22 @@ class BouncersView(ViewModel):
         bouncer_instance.key.delete()
 
         return jsonify(status=True, message='user successfully deleted')
+
+
+class BouncersView(ViewModel):
+    def __init__(self):
+        super(BouncersView, self).__init__()
+
+    @staticmethod
+    def bouncers_generator() -> Generator:
+        return (bouncer.to_dict() for bouncer in BouncerModel.query())
+
+    def get(self, page: int):
+        """
+            returns a list of bouncers
+        :return:
+        """
+        pass
+
+
+
