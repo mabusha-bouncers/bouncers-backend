@@ -15,6 +15,9 @@ from src.models.users import BouncerModel
 
 class BouncerView(ViewModel):
     """this view will handle bouncers API endpoints"""
+    methods = ['GET', 'POST', 'PUT', 'DELETE']
+    method_decorators = []
+
     # TODO do not forget to add middlewares here
     def __init__(self):
         super(BouncerView, self).__init__()
@@ -90,7 +93,11 @@ class BouncerView(ViewModel):
 
 
 class BouncersView(ViewModel):
+    """this view allows to users to get access to a list of bouncers"""
+    # TODO remember to add middlewares here
     default_page_size: int = 10
+    methods = ['GET', 'POST']
+    method_decorators = []
 
     def __init__(self):
         super(BouncersView, self).__init__()
