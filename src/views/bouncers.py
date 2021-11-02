@@ -69,10 +69,17 @@ class BouncersView(ViewModel):
 
         return jsonify(status=True, payload=bouncer_instance.to_dict(), message='successfully updated user details')
 
-    def delete(self, uid: str):
+    @staticmethod
+    def delete(uid: str):
         """
             will remove a bouncer from the database
         :param uid:
         :return:
         """
-        pass
+        bouncer_instance: BouncerModel = BouncerModel.query(BouncerModel.uid == uid).get()
+        if not isinstance(bouncer_instance, BouncerModel) or not bool(bouncer_instance):
+            raise DataServiceError(description='Unable to find an account with that id please create a new account')
+
+        bouncer_instance.key.delete()
+
+        return jsonify(status=True, message='user successfully deleted')
