@@ -62,7 +62,7 @@ class BouncersView(ViewModel):
             raise DataServiceError(description='Unable to find an account with that id please create a new account')
 
         bouncer_instance = BouncerModel(**bouncer_instance.to_dict(), **bouncer_details)
-        key: ndb.Key  = bouncer_instance.put()
+        key: ndb.Key = bouncer_instance.put()
         if not isinstance(key, ndb.Key):
             _message: str = 'Database Error: Unable to update user, please try again later'
             raise DataServiceError(description=_message)
