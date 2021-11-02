@@ -122,5 +122,6 @@ class FeedbackMixin(BaseModel):
     def __bool__(self) -> bool:
         return bool(self.client_uid) and bool(self.bouncer_uid)
 
-    def get_feedback_list(self):
-        raise NotImplementedError
+    def feedback_list(self):
+        """get_feedback_list protocol"""
+        ...
