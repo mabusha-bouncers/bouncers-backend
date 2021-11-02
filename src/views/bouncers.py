@@ -93,7 +93,7 @@ class BouncerView(ViewModel):
 
 
 class ListView(ViewModel):
-    # TODO remember to add middlewares here
+    """allows access to a list of bouncers"""
     default_page_size: int = 10
     methods = ['GET', 'POST']
     method_decorators = []
@@ -121,7 +121,7 @@ class ListView(ViewModel):
 
 
 class BouncerListView(ListView):
-    """this view allows to users to get access to a list of bouncers"""
+    """this view allows to users to get access to a total list of bouncers"""
     methods = ['GET']
 
     def __init__(self):
@@ -136,6 +136,7 @@ class BouncerListView(ListView):
 
 
 class BouncersPageView(ListView):
+    """allows access to bouncers by pages of ten each time , however the page size can be modified"""
     methods = ['GET', 'POST']
 
     def __init__(self):
