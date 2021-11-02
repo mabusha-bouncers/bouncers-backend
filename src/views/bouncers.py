@@ -92,15 +92,14 @@ class BouncerView(ViewModel):
         return jsonify(status=True, message='user successfully deleted')
 
 
-class BouncersView(ViewModel):
-    """this view allows to users to get access to a list of bouncers"""
+class ListView(ViewModel):
     # TODO remember to add middlewares here
     default_page_size: int = 10
     methods = ['GET', 'POST']
     method_decorators = []
 
     def __init__(self):
-        super(BouncersView, self).__init__()
+        super(ListView, self).__init__()
         self.page_size: int = self.default_page_size
 
     @staticmethod
@@ -109,6 +108,25 @@ class BouncersView(ViewModel):
         """this method will obtain and memoize the list of bouncers from the database"""
         return [bouncer.to_dict() for bouncer in BouncerModel.query()]
 
+    def post(self, page_size: int):
+        """
+
+        :param page_size:
+        :return:
+        """
+        self.page_size = page_size
+        if not isinstance(page_size, int) or page_size < self.default_page_size:
+            raise InputError(description=f'Invalid Page size must be an integer not less than {self.default_page_size}')
+        return jsonify(status=True, message=f'page size successfully set to {self.page_size}')
+
+
+class BouncerListView(ListView):
+    """this view allows to users to get access to a list of bouncers"""
+    methods = ['GET']
+
+    def __init__(self):
+        super(BouncerListView, self).__init__()
+
     def get(self):
         """
             returns a list of bouncers
@@ -116,24 +134,20 @@ class BouncersView(ViewModel):
         """
         return jsonify(status=True, payload=self.bouncers_generator(), message='successfully retrieved bouncers')
 
-    def get_by_page(self, page_number: int):
+
+class BouncersPageView(ListView):
+    methods = ['GET', 'POST']
+
+    def __init__(self):
+        super(BouncersPageView, self).__init__()
+
+    def get(self, page_number: int):
         """
 
         :param page_number:
         :return:
         """
         return jsonify(status=True,
-                       payload=self.bouncers_generator()[self.page_size*page_number:self.page_size],
+                       payload=self.bouncers_generator()[self.page_size * page_number:self.page_size],
                        message='successfully retrieved bouncers at that page')
 
-    def set_page_size(self, page_size: int):
-        """
-
-        :param page_size:
-        :return:
-        """
-        if not isinstance(page_size, int) or page_size < self.default_page_size:
-            raise InputError(description=f'Invalid Page size must be an integer not less than {self.default_page_size}')
-
-        self.page_size = page_size
-        return jsonify(status=True, message=f'page size successfully set to {self.page_size}')
