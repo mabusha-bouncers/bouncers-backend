@@ -109,7 +109,7 @@ class BouncerModel(UserModel):
         return super().__bool__()
 
 
-class BouncerFeedbackModel(FeedbackMixin, ABC):
+class BouncerFeedbackModel(FeedbackMixin):
     """
         **BouncerFeedbackModel**
             allows clients to leave feedback about bouncers & security once the job

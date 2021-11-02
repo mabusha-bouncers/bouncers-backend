@@ -95,7 +95,7 @@ class ClientModel(UserModel):
         return super().__bool__()
 
 
-class ClientFeedbackModel(FeedbackMixin, ABC):
+class ClientFeedbackModel(FeedbackMixin):
     """
         **Class ClientFeedbackModel**
             allows bouncers & security to leave feedback after each job,
