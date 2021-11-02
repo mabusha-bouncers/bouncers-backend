@@ -1,12 +1,14 @@
 """
 **bouncers view**
 """
-from typing import Generator
+from typing import Generator, List
 
 from flask import jsonify
 from google.cloud import ndb
 
+from src.cache import app_cache
 from src.exceptions import InputError, DataServiceError
+from src.utils.utils import return_ttl
 from src.views import ViewModel
 from src.models.users import BouncerModel
 
@@ -88,19 +90,43 @@ class BouncerView(ViewModel):
 
 
 class BouncersView(ViewModel):
+    default_page_size: int = 10
+
     def __init__(self):
         super(BouncersView, self).__init__()
+        self.page_size: int = self.default_page_size
 
     @staticmethod
-    def bouncers_generator() -> Generator:
-        return (bouncer.to_dict() for bouncer in BouncerModel.query())
+    @app_cache.cache.memoize(timeout=return_ttl('short'))
+    def bouncers_generator() -> List[BouncerModel]:
+        """this method will obtain and memoize the list of bouncers from the database"""
+        return [bouncer.to_dict() for bouncer in BouncerModel.query()]
 
-    def get(self, page: int):
+    def get(self):
         """
             returns a list of bouncers
         :return:
         """
-        pass
+        return jsonify(status=True, payload=self.bouncers_generator(), message='successfully retrieved bouncers')
 
+    def get_by_page(self, page_number: int):
+        """
 
+        :param page_number:
+        :return:
+        """
+        return jsonify(status=True,
+                       payload=self.bouncers_generator()[self.page_size*page_number:self.page_size],
+                       message='successfully retrieved bouncers at that page')
 
+    def set_page_size(self, page_size: int):
+        """
+
+        :param page_size:
+        :return:
+        """
+        if not isinstance(page_size, int) or page_size < self.default_page_size:
+            raise InputError(description=f'Invalid Page size must be an integer not less than {self.default_page_size}')
+
+        self.page_size = page_size
+        return jsonify(status=True, message=f'page size successfully set to {self.page_size}')
