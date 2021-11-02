@@ -54,7 +54,6 @@ class ClientView(ViewModel):
                             payload=client_instance.to_dict(),
                             message=_message)), status_codes.status_ok_code
 
-
     @staticmethod
     def put(client_details: dict):
         """
@@ -62,3 +61,20 @@ class ClientView(ViewModel):
         :param client_details:
         :return:
         """
+        uid: str = client_details.get('uid')
+        client_instance: ClientModel = ClientModel.query(ClientModel.uid == uid).get()
+        if not isinstance(client_instance, ClientModel) or not bool(client_instance):
+            raise DataServiceError(description='A Client with that ID does not exist')
+
+        # TODO - limit the properties that to_dict() returns here
+        client_instance: ClientModel = ClientModel(**client_instance.to_dict(), **client_details)
+        key: ndb.Key = client_instance.put()
+        if not isinstance(key, ndb.Key):
+            raise DataServiceError(description='Unable to update client details')
+        _message: str = 'successfully updated client'
+        return jsonify(dict(status=True,
+                            payload=client_instance.to_dict(),
+                            message=_message)), status_codes.status_ok_code
+
+
+
