@@ -49,15 +49,25 @@ class BouncersView(ViewModel):
 
         return jsonify(status=True, payload=bouncer_instance.to_dict(), message='successfully created new bouncer')
 
-
-
-    def put(self, bouncer_details: dict):
+    @staticmethod
+    def put(bouncer_details: dict):
         """
             will update a bouncer depending on bouncer details
         :param bouncer_details:
         :return:
         """
-        pass
+        uid: str = bouncer_details.get('uid')
+        bouncer_instance: BouncerModel = BouncerModel.query(BouncerModel.uid == uid).get()
+        if not isinstance(bouncer_instance, BouncerModel) or not bool(bouncer_instance):
+            raise DataServiceError(description='Unable to find an account with that id please create a new account')
+
+        bouncer_instance = BouncerModel(**bouncer_instance.to_dict(), **bouncer_details)
+        key: ndb.Key  = bouncer_instance.put()
+        if not isinstance(key, ndb.Key):
+            _message: str = 'Database Error: Unable to update user, please try again later'
+            raise DataServiceError(description=_message)
+
+        return jsonify(status=True, payload=bouncer_instance.to_dict(), message='successfully updated user details')
 
     def delete(self, uid: str):
         """
