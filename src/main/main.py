@@ -16,6 +16,7 @@ from apispec.ext.marshmallow import MarshmallowPlugin
 from flask_apispec.extension import FlaskApiSpec
 from src.cache import app_cache
 
+docs = FlaskApiSpec()
 
 def create_app(config=config_instance) -> Flask:
     """
@@ -54,5 +55,25 @@ def create_app(config=config_instance) -> Flask:
                          methods=['GET'])
         api.add_resource(ClientsListView, '/api/v1/client/list', endpoint='get_client_list',
                          methods=['GET'])
+
+        app.config.update({
+            'APISPEC_SPEC': APISpec(
+                title='Bouncers API',
+                version='0.0.1',
+                plugins=[MarshmallowPlugin()],
+                openapi_version='2.0.0'
+            ),
+            'APISPEC_SWAGGER_URL': '/api',
+            'APISPEC_SWAGGER_UI_URL': '/api-ui'
+
+        })
+
+        docs.init_app(app)
+        docs.register(target=BouncerView, endpoint='get_update_bouncer')
+        docs.register(target=BouncersPageView, endpoint='get_bouncer_by_page')
+        docs.register(target=BouncerListView, endpoint='get_bouncers_list')
+        docs.register(target=ClientView, endpoint='get_update_client')
+        docs.register(target=ClientsPageView, endpoint='get_client_by_page')
+        docs.register(target=ClientsListView, endpoint='get_client_list')
 
         return app

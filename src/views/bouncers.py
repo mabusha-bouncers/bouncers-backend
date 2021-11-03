@@ -83,6 +83,9 @@ class BouncerView(ViewModel):
         :param uid:
         :return:
         """
+        if not isinstance(uid, str):
+            raise InputError(description='uid must be an integer')
+
         bouncer_instance: BouncerModel = BouncerModel.query(BouncerModel.uid == uid).get()
         if not isinstance(bouncer_instance, BouncerModel) or not bool(bouncer_instance):
             raise DataServiceError(description='Unable to find an account with that id please create a new account')
@@ -93,7 +96,10 @@ class BouncerView(ViewModel):
 
 
 class BouncerListView(ListView):
-    """this view allows to users to get access to a total list of bouncers"""
+    """
+        **Class BouncerListView**        
+            this view allows to users to get access to a total list of bouncers
+    """
     methods = ['GET']
 
     def __init__(self):
@@ -108,7 +114,10 @@ class BouncerListView(ListView):
 
 
 class BouncersPageView(ListView):
-    """allows access to bouncers by pages of ten each time , however the page size can be modified"""
+    """
+        **BouncersPageView**
+            allows access to bouncers by pages of ten each time , however the page size can be modified
+    """
     methods = ['GET', 'POST']
 
     def __init__(self):
@@ -120,6 +129,9 @@ class BouncersPageView(ListView):
         :param page_number:
         :return:
         """
+        if not isinstance(page_number, int):
+            raise InputError(description='page number should be an integer')
+
         return jsonify(status=True,
                        payload=self.bouncers_generator()[self.page_size * page_number:self.page_size],
                        message='successfully retrieved bouncers at that page')
