@@ -15,7 +15,7 @@ __twitter__ = "@blueitserver"
 __github_profile__ = "https://github.com/freelancing-solutions/"
 __licence__ = "MIT"
 
-from datetime import date
+from datetime import date, time
 from google.cloud import ndb
 from src.models.basemodel import BaseModel
 
@@ -37,6 +37,7 @@ class HelpDesk(BaseModel):
     ticket_type: str = ndb.StringProperty()
     is_resolved: str = ndb.BooleanProperty(default=False)
     date_created: date = ndb.DateProperty(auto_now_add=True)
+    time_created: time = ndb.TimeProperty(auto_now_add=True)
     date_updated: date = ndb.DateProperty(auto_now=True)
 
     def __bool__(self) -> bool:

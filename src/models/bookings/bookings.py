@@ -13,8 +13,17 @@ from google.cloud import ndb
 from src.models.basemodel import BaseModel
 
 
-class BookingsModule(BaseModel):
+class BookingsModel(BaseModel):
     """
-
+        **BookingsModel**
+            allows clients to book bouncers
     """
     booking_id: str = ndb.StringProperty(indexed=True)
+    client_id: str = ndb.StringProperty(indexed=True)
+
+    date_booked: date = ndb.DateProperty(auto_now_add=True)
+    time_booked: time = ndb.TimeProperty(auto_now_add=True)
+    
+
+
+

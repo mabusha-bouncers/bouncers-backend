@@ -66,6 +66,7 @@ class AddressModel(BaseModel):
         return f"<Address: {self.address}"
 
     def __bool__(self) -> bool:
+        """returns true if address is valid"""
         return bool(self.address_id)
 
 
