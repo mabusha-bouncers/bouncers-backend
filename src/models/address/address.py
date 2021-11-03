@@ -45,6 +45,8 @@ class AddressModel(BaseModel):
             holds addresses for clients, admins, bouncers and places where events will take place
             or where work is available
         `PARAMETERS`
+        
+            address_id: 
     """
     address_id: str = ndb.StringProperty(indexed=True, required=True)
     street: str = ndb.StringProperty(indexed=True, required=True)
@@ -56,9 +58,11 @@ class AddressModel(BaseModel):
 
     @property
     def address(self) -> str:
+        """returns the address as string"""
         return f"{self.street}, {self.city_town}, {self.province}, {self.country}, {self.postal_code}"
 
     def __str__(self) -> str:
+        """returns address in string format"""
         return f"<Address: {self.address}"
 
     def __bool__(self) -> bool:
