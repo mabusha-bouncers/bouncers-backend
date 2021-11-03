@@ -98,7 +98,17 @@ class ClientView(ViewModel):
 
 
 class ClientsListView(ListView):
-    pass
+    """
+        **Class ClientsListView**
+            enables retrieval of full client lists
+    """
+    def __init__(self):
+        super(ClientsListView, self).__init__()
+
+    def get(self):
+        return jsonify(dict(status=True,
+                            payload=self.client_generator(),
+                            message='successfully retrieved client list')), status_codes.status_ok_code
 
 
 class ClientsPageView(ListView):
