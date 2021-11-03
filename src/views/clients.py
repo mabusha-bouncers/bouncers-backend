@@ -95,4 +95,3 @@ class ClientView(ViewModel):
                                 message='client successfully deleted')), status_codes.successfully_updated_code
         return jsonify(dict(status=False,
                             message='client does not exist may already have been deleted')), status_codes.data_not_found_code
-
