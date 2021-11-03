@@ -5,7 +5,7 @@ from flask import jsonify
 from google.cloud import ndb
 
 from src.exceptions import DataServiceError, status_codes
-from src.views import ViewModel
+from src.views import ViewModel, ListView
 from src.models.users.clients import ClientModel
 
 
@@ -95,3 +95,25 @@ class ClientView(ViewModel):
                                 message='client successfully deleted')), status_codes.successfully_updated_code
         return jsonify(dict(status=False,
                             message='client does not exist may already have been deleted')), status_codes.data_not_found_code
+
+
+class ClientsListView(ListView):
+    pass
+
+
+class ClientsPageView(ListView):
+    """
+        enables the retrieval of clients by page number
+    """
+    def __init__(self):
+        super(ClientsPageView, self).__init__()
+
+    def get(self, page_number: int):
+        """
+
+        :param page_number:
+        :return:
+        """
+        return jsonify(dict(status=True,
+                            payload=self.client_generator()[self.page_size * page_number: self.page_size],
+                            message='successfully retrieved clients')), status_codes.status_ok_code
