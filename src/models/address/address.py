@@ -27,9 +27,16 @@ class SAProvinceTypes:
     western_cape: str = 'western_cape'
 
     @classmethod
-    def types(cls) -> List[str]:
+    def types(cls) -> list:
         return sorted([cls.limpopo, cls.mpumalanga, cls.north_west, cls.gauteng, cls.northern_cape, cls.kwazulu_natal,
                        cls.free_state, cls.eastern_cape, cls.western_cape])
+
+    @classmethod
+    def values(cls) -> List[str]:
+        """
+            returns values only from enumerated provinces
+        """
+        return [_item.value for _item in cls.types()]
 
 
 class AddressModel(BaseModel):
@@ -42,7 +49,7 @@ class AddressModel(BaseModel):
     address_id: str = ndb.StringProperty(indexed=True, required=True)
     street: str = ndb.StringProperty(indexed=True, required=True)
     city_town: str = ndb.StringProperty(indexed=True, required=True)
-    province = ndb.StringProperty(default=SAProvinceTypes.gauteng, choices=SAProvinceTypes.types(), indexed=True,
+    province = ndb.StringProperty(default=SAProvinceTypes.gauteng.value, choices=SAProvinceTypes.values(), indexed=True,
                                   required=True)
     country: str = ndb.StringProperty(default='south africa', required=True)
     postal_code: str = ndb.StringProperty(indexed=True, required=True)
@@ -56,6 +63,7 @@ class AddressModel(BaseModel):
 
     def __bool__(self) -> bool:
         return bool(self.address_id)
+
 
 
 if __name__ == '__main__':
