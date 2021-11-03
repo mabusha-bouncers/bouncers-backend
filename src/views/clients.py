@@ -22,6 +22,7 @@ class ClientView(ViewModel):
     @staticmethod
     def get(uid: str):
         """
+        **get**
             returns a specific client
         :param uid:
         :return:
@@ -38,7 +39,8 @@ class ClientView(ViewModel):
     @staticmethod
     def post(client_details: dict):
         """
-
+        **post**
+            create a client instance from client details
         :param client_details:
         :return:
         """
@@ -57,7 +59,9 @@ class ClientView(ViewModel):
     @staticmethod
     def put(client_details: dict):
         """
+        **put**
             update client details
+
         :param client_details:
         :return:
         """
@@ -75,6 +79,4 @@ class ClientView(ViewModel):
         return jsonify(dict(status=True,
                             payload=client_instance.to_dict(),
                             message=_message)), status_codes.status_ok_code
-
-
 
