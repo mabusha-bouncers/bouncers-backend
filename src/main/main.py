@@ -39,10 +39,14 @@ def create_app(config=config_instance) -> Flask:
         from src.views.bouncers import BouncerView, BouncersPageView, BouncerListView
         from src.views.clients import ClientView, ClientsPageView, ClientsListView
 
+        ##### bouncers endpoints
         api.add_resource(BouncerView, '/api/v1/bouncer', endpoint='get_update_bouncer',
                          methods=['GET', 'POST', 'PUT', 'DELETE'])
         api.add_resource(BouncersPageView, '/api/v1/bouncer/page', endpoint='get_bouncer_by_page',
                          methods=['GET'])
         api.add_resource(BouncerListView, '/api/v1/bouncer/list', endpoint='get_bouncers_list',
                          methods=['GET'])
+        ##### clients endpoints
+        api.add_resource(ClientView, '/api/v1/client', endpoint='get_update_client',
+                         methods=['GET', 'POST', 'PUT', 'DELETE'])
         return app
