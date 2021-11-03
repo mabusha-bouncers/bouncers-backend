@@ -20,16 +20,11 @@ docs = FlaskApiSpec()
 
 def create_app(config=config_instance) -> Flask:
     """
-    Battle Hall, War Room , Garrison Hall, Vehicle Factory, Class Barrack,  Barrack 1,
+        **create_app**
+            creates and initialize a Flask Application
 
-    Class APC Research , APC 1 Research & Vehicle Research
-
-
-    **create_app**
-        creates and initialize a Flask Application
-
-    :param config: application configuration settings
-    :return: Flask Application
+        :param config: application configuration settings
+        :return: Flask Application
     """
     app = Flask(__name__)
     app.config.from_object(config)
