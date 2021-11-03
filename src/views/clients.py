@@ -48,7 +48,7 @@ class ClientView(ViewModel):
         client_instance: ClientModel = ClientModel.query(ClientModel.uid == uid).get()
         if isinstance(client_instance, ClientModel) and bool(client_instance):
             raise DataServiceError(description='A Client with that ID already exist')
-        
+
         client_instance: ClientModel = ClientModel(**client_details)
 
         _message: str = 'successfully created client'
@@ -79,4 +79,20 @@ class ClientView(ViewModel):
         return jsonify(dict(status=True,
                             payload=client_instance.to_dict(),
                             message=_message)), status_codes.status_ok_code
+
+    @staticmethod
+    def delete(uid: str):
+        """
+            **delete*
+                delete client details from database
+        :param uid:
+        :return:
+        """
+        client_instance: ClientModel = ClientModel.query(ClientModel.uid == uid).get()
+        if isinstance(client_instance, ClientModel):
+            client_instance.key.delete()
+            return jsonify(dict(status=True,
+                                message='client successfully deleted')), status_codes.successfully_updated_code
+        return jsonify(dict(status=False,
+                            message='client does not exist may already have been deleted')), status_codes.data_not_found_code
 
