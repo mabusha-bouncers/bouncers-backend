@@ -8,7 +8,6 @@ __twitter__ = "@blueitserver"
 __github_profile__ = "https://github.com/freelancing-solutions/"
 __licence__ = "MIT"
 
-from abc import ABC
 from enum import Enum
 from statistics import mean
 from typing import List, Generator, Optional
