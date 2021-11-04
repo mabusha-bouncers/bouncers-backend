@@ -165,3 +165,18 @@ class BouncerFeedBackView(ViewModel):
                             payload=feedback.to_dict(),
                             message='feedback successfully retrieved')), status_codes.status_ok_code
 
+    @staticmethod
+    def post(feedback: dict) -> tuple:
+        """
+            will accept feedback as dictionary then create
+        :param feedback:
+        :return:
+        """
+        feedback_instance: BouncerFeedbackModel = BouncerFeedbackModel(**feedback)
+        key: ndb.Key = feedback_instance.put()
+        if isinstance(key, ndb.Key):
+            raise DataServiceError(description='error creating feedback')
+
+        return jsonify(dict(status=True,
+                            payload=feedback_instance.to_dict(),
+                            message='successfully created feedback')), status_codes.successfully_updated_code
