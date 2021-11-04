@@ -62,7 +62,7 @@ def create_app(config=config_instance) -> Flask:
             'APISPEC_SWAGGER_UI_URL': '/api-ui'
 
         })
-
+        # registering documnetation
         docs.init_app(app)
         docs.register(target=BouncerView, endpoint='get_update_bouncer')
         docs.register(target=BouncersPageView, endpoint='get_bouncer_by_page')
