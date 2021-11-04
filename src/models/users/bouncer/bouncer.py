@@ -106,6 +106,7 @@ class BouncerModel(UserModel):
                f"Grade: {self.security_grade}, Rating: {self.rating_in_words}"
 
     def __bool__(self) -> bool:
+
         return super().__bool__()
 
 
@@ -129,14 +130,14 @@ class BouncerFeedbackModel(FeedbackMixin):
 
     def __bool__(self) -> bool:
         """
-
+            returns true if class is valid
         :return:
         """
         return super().__bool__()
 
     def feedback_list(self) -> Optional[Generator]:
         """
-
+            returns a list of feedback sent for bouncer
         :return:
         """
         if not self.bouncer_uid:
