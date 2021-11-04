@@ -10,26 +10,26 @@ __twitter__ = "@blueitserver"
 __github_profile__ = "https://github.com/freelancing-solutions/"
 __licence__ = "MIT"
 
+from enum import Enum
 from typing import List
 from google.cloud import ndb
 from src.models.basemodel import BaseModel
 
 
-class SAProvinceTypes:
-    limpopo: str = 'limpopo'
-    mpumalanga: str = 'mpumalanga'
-    north_west: str = 'north_west'
-    gauteng: str = 'gauteng'
-    northern_cape: str = 'northern_cape'
-    kwazulu_natal: str = 'kwazulu_natal'
-    free_state: str = 'free_state'
-    eastern_cape: str = 'eastern_cape'
-    western_cape: str = 'western_cape'
+class SAProvinceTypes(Enum):
+    limpopo = 'limpopo'
+    mpumalanga = 'mpumalanga'
+    north_west = 'north_west'
+    gauteng = 'gauteng'
+    northern_cape = 'northern_cape'
+    kwazulu_natal = 'kwazulu_natal'
+    free_state = 'free_state'
+    eastern_cape = 'eastern_cape'
+    western_cape = 'western_cape'
 
     @classmethod
     def types(cls) -> list:
-        return sorted([cls.limpopo, cls.mpumalanga, cls.north_west, cls.gauteng, cls.northern_cape, cls.kwazulu_natal,
-                       cls.free_state, cls.eastern_cape, cls.western_cape])
+        return list(cls)
 
     @classmethod
     def values(cls) -> List[str]:
@@ -51,7 +51,7 @@ class AddressModel(BaseModel):
     address_id: str = ndb.StringProperty(indexed=True, required=True)
     street: str = ndb.StringProperty(indexed=True, required=True)
     city_town: str = ndb.StringProperty(indexed=True, required=True)
-    province = ndb.StringProperty(default=SAProvinceTypes.gauteng.value, choices=SAProvinceTypes.values(), indexed=True,
+    province = ndb.StringProperty(default=SAProvinceTypes.gauteng, choices=SAProvinceTypes.values(), indexed=True,
                                   required=True)
     country: str = ndb.StringProperty(default='south africa', required=True)
     postal_code: str = ndb.StringProperty(indexed=True, required=True)
@@ -68,7 +68,6 @@ class AddressModel(BaseModel):
     def __bool__(self) -> bool:
         """returns true if address is valid"""
         return bool(self.address_id)
-
 
 
 if __name__ == '__main__':
