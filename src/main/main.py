@@ -18,6 +18,7 @@ from src.cache import app_cache
 
 docs = FlaskApiSpec()
 
+
 def create_app(config=config_instance) -> Flask:
     """
         **create_app**
@@ -33,6 +34,7 @@ def create_app(config=config_instance) -> Flask:
         api = Api(app)
         app_cache.init_app(app=app)
         from src.views.bouncers import BouncerView, BouncersPageView, BouncerListView
+        from src.views.bouncers import BouncerFeedBackView, BouncerFeedbackListView
         from src.views.clients import ClientView, ClientsPageView, ClientsListView
 
         # bouncers endpoints
@@ -49,6 +51,16 @@ def create_app(config=config_instance) -> Flask:
         api.add_resource(ClientsPageView, '/api/v1/client/page/<int:page_number>', endpoint='get_client_by_page',
                          methods=['GET'])
         api.add_resource(ClientsListView, '/api/v1/client/list', endpoint='get_client_list',
+                         methods=['GET'])
+
+        # bouncers feedback endpoints
+        api.add_resource(BouncerFeedBackView, '/api/v1/bouncer/feedback/<str:feedback_id>', endpoint='get_update_bouncer_feedback',
+                         methods=['GET', 'PUT', 'DELETE'])
+
+        api.add_resource(BouncerFeedBackView, '/api/v1/bouncer/feedback', endpoint='create_bouncer_feedback',
+                         methods=['POST'])
+
+        api.add_resource(BouncerFeedbackListView, '/api/v1/bouncer/feedback/list', endpoint='get_bouncers_list',
                          methods=['GET'])
 
         app.config.update({
