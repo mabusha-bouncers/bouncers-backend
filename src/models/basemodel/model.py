@@ -90,3 +90,7 @@ class BaseModel(ndb.Expando):
 
         return [(prop._code_name, prop._from_base_type()) for prop in self._properties.values()]
 
+    def update(self, data: dict) -> None:
+        """allows updating of a class instance form dict"""
+        for key, value in data.items():
+            setattr(self, key, value)
