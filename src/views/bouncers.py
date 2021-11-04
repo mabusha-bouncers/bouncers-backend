@@ -220,4 +220,4 @@ class BouncerFeedBackView(ViewModel):
                                 message='feedback not found cannot be deleted')), status_codes.data_not_found_code
 
         return jsonify(dict(status=True,
-                            message='feedback succesfully deleted')), status_codes.successfully_updated_code
+                            message='feedback successfully deleted')), status_codes.successfully_updated_code
