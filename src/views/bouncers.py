@@ -9,7 +9,7 @@ from google.cloud import ndb
 from src.cache import app_cache
 from src.exceptions import InputError, DataServiceError, status_codes
 from src.models.users.bouncer.bouncer import BouncerFeedbackModel
-from src.utils.utils import return_ttl
+from src.utils.utils import return_ttl, create_id
 from src.views import ViewModel, ListView
 from src.models.users import BouncerModel
 
@@ -172,7 +172,8 @@ class BouncerFeedBackView(ViewModel):
         :param feedback:
         :return:
         """
-        feedback_instance: BouncerFeedbackModel = BouncerFeedbackModel(**feedback)
+
+        feedback_instance: BouncerFeedbackModel = BouncerFeedbackModel(**feedback, feedback_id=create_id())
         key: ndb.Key = feedback_instance.put()
         if isinstance(key, ndb.Key):
             raise DataServiceError(description='error creating feedback')
@@ -180,3 +181,43 @@ class BouncerFeedBackView(ViewModel):
         return jsonify(dict(status=True,
                             payload=feedback_instance.to_dict(),
                             message='successfully created feedback')), status_codes.successfully_updated_code
+
+    @staticmethod
+    def put(feedback: dict) -> tuple:
+        """
+            update bouncer feedback
+        :param feedback:
+        :return:
+        """
+        feedback_id: str = feedback.get('feedback_id')
+        feedback_instance: BouncerFeedbackModel = BouncerFeedbackModel.query(
+            BouncerFeedbackModel.feedback_id == feedback_id).get()
+        if not isinstance(feedback_instance, BouncerFeedbackModel) or not bool(feedback_instance):
+            return jsonify(dict(status=False,
+                                message='feedback not found cannot be updated')), status_codes.data_not_found_code
+
+        feedback_instance.update(feedback)
+        key: ndb.Key = feedback_instance.put()
+        if not isinstance(key, ndb.Key):
+            raise DataServiceError(description='error updating feedback')
+
+        return jsonify(dict(status=True,
+                            payload=feedback_instance.to_dict(),
+                            message='successfully updated feedback')), status_codes.successfully_updated_code
+
+    @staticmethod
+    def delete(feedback_id: str) -> tuple:
+        """
+            delete feedback
+        :param feedback_id:
+        :return:
+        """
+        feedback_instance: BouncerFeedbackModel = BouncerFeedbackModel.query(
+            BouncerFeedbackModel.feedback_id == feedback_id).get()
+
+        if not isinstance(feedback_instance, BouncerFeedbackModel) or not bool(feedback_instance):
+            return jsonify(dict(status=False,
+                                message='feedback not found cannot be deleted')), status_codes.data_not_found_code
+
+        return jsonify(dict(status=True,
+                            message='feedback succesfully deleted')), status_codes.successfully_updated_code
