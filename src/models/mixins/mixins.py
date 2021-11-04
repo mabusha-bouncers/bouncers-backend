@@ -115,6 +115,7 @@ class FeedbackMixin(BaseModel):
     """
     client_uid: str = ndb.StringProperty()
     bouncer_uid: str = ndb.StringProperty()
+    feedback_id: str = ndb.StringProperty()
     feedback: str = ndb.StringProperty()
     date_created: date = ndb.DateProperty(auto_now_add=True)
     date_updated: date = ndb.DateProperty(auto_now=True)

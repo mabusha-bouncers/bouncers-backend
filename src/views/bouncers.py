@@ -7,7 +7,8 @@ from flask import jsonify
 from google.cloud import ndb
 
 from src.cache import app_cache
-from src.exceptions import InputError, DataServiceError
+from src.exceptions import InputError, DataServiceError, status_codes
+from src.models.users.bouncer.bouncer import BouncerFeedbackModel
 from src.utils.utils import return_ttl
 from src.views import ViewModel, ListView
 from src.models.users import BouncerModel
@@ -135,4 +136,32 @@ class BouncersPageView(ListView):
         return jsonify(status=True,
                        payload=self.bouncers_generator()[self.page_size * page_number:self.page_size],
                        message='successfully retrieved bouncers at that page')
+
+
+class BouncerFeedBackView(ViewModel):
+    """
+        ** CLass BouncerFeedBackView **
+            enables Bouncers to create feedback for clients
+            enables bouncers to retrieve their own feedback
+    """
+    methods = ['GET', 'POST', 'PUT', 'DELETE']
+
+    def __init__(self) -> None:
+        super(BouncerFeedBackView, self).__init__()
+
+    @staticmethod
+    def get(feedback_id: str) -> tuple:
+        """
+            returns a specific feedback by feedback_id
+        :return:
+        """
+
+        feedback = BouncerFeedbackModel.query(BouncerFeedbackModel.feedback_id == feedback_id).get()
+        if not isinstance(feedback, BouncerFeedbackModel) or not bool(feedback):
+            return jsonify(dict(status=False,
+                                message='feedback with that id not found')), status_codes.data_not_found_code
+
+        return jsonify(dict(status=True,
+                            payload=feedback.to_dict(),
+                            message='feedback successfully retrieved')), status_codes.status_ok_code
 
