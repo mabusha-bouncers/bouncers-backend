@@ -221,3 +221,22 @@ class BouncerFeedBackView(ViewModel):
 
         return jsonify(dict(status=True,
                             message='feedback successfully deleted')), status_codes.successfully_updated_code
+
+
+class BouncerFeedbackListView(ViewModel):
+    """allows access to a list of bouncers feedback"""
+    methods = ['GET']
+
+    def __init__(self):
+        super(BouncerFeedbackListView, self).__init__()
+
+    @staticmethod
+    def get(self, bouncer_id: str) -> tuple:
+        """returns a list of feedback related to this bouncer"""
+        feedback_list: List[dict] = [feedback.to_dict()
+                                     for feedback in BouncerFeedbackModel.query(BouncerFeedbackModel.bouncer_id == bouncer_id)]
+        return jsonify(dict(status=True,
+                            payload=feedback_list,
+                            message='successfully retrieved feedback')), status_codes.status_ok_code
+
+
