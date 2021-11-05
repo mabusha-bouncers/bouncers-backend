@@ -11,7 +11,8 @@ class PaymentView(ViewModel):
     """ Payment View Model """
     methods = ['GET', 'POST', 'PUT', 'DELETE']
 
-    def get(self, payment_id: str) -> tuple:
+    @staticmethod
+    def get(payment_id: str) -> tuple:
         """ get a payment """
         if payment_id is None:
             raise InputError(description='Payment ID is required')
@@ -25,6 +26,22 @@ class PaymentView(ViewModel):
         return jsonify(dict(status=True, 
                             payload=payment_instance.to_dict(), 
                             message='successfully retrieved payment')), status_codes.status_ok_code
+    
+    @staticmethod
+    def post(payment_data: dict) -> tuple:
+        """ create a payment """
+        if payment_data is None:
+            raise InputError(description='Payment data is required')
 
+        payment_instance: PaymentsModel = PaymentsModel(**payment_data, payment_id= create_id())
+
+        key: ndb.Key = payment_instance.put()
+        if not isinstance(key, ndb.Key):
+            raise DataServiceError(description='Failed to create payment')
+
+        return jsonify(dict(status=True, 
+                            payload=payment_instance.to_dict(),
+                            message='successfully created payment')), status_codes.status_ok_code
+    
 
 
