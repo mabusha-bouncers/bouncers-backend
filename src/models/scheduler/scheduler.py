@@ -60,6 +60,17 @@ class SchedulerModel(BaseModel):
     time_updated: datetime = ndb.DateTimeProperty(auto_now=True)
 
     
+    def __str__(self) -> str:
+        """ Returns the string representation of the object """
+        return f"{self.schedule_id} - {self.time_slot} - {self.location_address_id}"
+
+    def __eq__(self, other) -> bool:
+        """ Returns True if the objects are equal """
+        return self.schedule_id == other.schedule_id and self.time_slot == other.time_slot and self.location_address_id == other.location_address_id
+    
+    def __bool__(self) -> bool:
+        """ Returns True if the object is not None """
+        return self.schedule_id and self.time_slot and self.location_address_id
 
 
 class BouncerScheduled(BaseModel):
@@ -89,5 +100,5 @@ class BouncerScheduled(BaseModel):
     def __eq__(self, other) -> bool:
         return self.uid == other.uid and self.schedule_id == other.schedule_id
     
-    
+
     
