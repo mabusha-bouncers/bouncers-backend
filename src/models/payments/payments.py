@@ -5,15 +5,23 @@
 from google.cloud import ndb
 from src.models.mixins import AmountMixin
 from src.models.basemodel import BaseModel
+from enum import Enum, auto
+
 
 class PaymentTypes(Enum):
     """
         Enum for payment types
     """
-    CASH = 1
-    CREDIT = 2
-    DEBIT = 3
-    
+    cash = auto()
+    credit = auto()
+    debit = auto()
+
+    @classmethod
+    def choices(cls) -> List[str]:
+        """
+            Method to return a list of payment choices
+        """
+        return [choice.name for choice in cls]
 
 class PaymentsModel(BaseModel):
     """
