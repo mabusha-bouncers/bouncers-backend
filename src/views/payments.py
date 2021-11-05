@@ -15,6 +15,9 @@ class PaymentView(ViewModel):
     
     """
     methods = ['GET', 'POST', 'PUT', 'DELETE']
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
     @staticmethod
     def get(payment_id: str) -> tuple:
@@ -91,6 +94,11 @@ class PaymentListView(ViewModel):
         **Class PaymentListView**
             enables access to a list of payment records
     """
+    methods = ['GET']
+
+    def __init__(self, *args, **kwargs):
+        """initialize the payment list view"""
+        super().__init__(*args, **kwargs)
     
     def get(self) -> tuple:
         """ get a list of payments """
