@@ -7,6 +7,7 @@ from flask import jsonify
 from src.models.payments import PaymentsModel
 from src.exceptions.exceptions import DataServiceError, InputError, status_codes
 
+
 class PaymentView(ViewModel):
     """ 
     **Class PaymentView**
@@ -83,3 +84,21 @@ class PaymentView(ViewModel):
         payment_instance.key.delete()
         return jsonify(dict(status=True, 
                             message='successfully deleted payment')), status_codes.status_ok_code
+
+
+class PaymentListView(ViewModel):
+    """
+        **Class PaymentListView**
+            enables access to a list of payment records
+    """
+    
+    def get(self) -> tuple:
+        """ get a list of payments """
+        payment_list: list = PaymentsModel.query().fetch()
+        if not isinstance(payment_list, list):
+            return jsonify(dict(status=False, 
+                                message='failed to retrieve payment list')), status_codes.data_not_found_code
+        
+        return jsonify(dict(status=True, 
+                            payload=[payment.to_dict() for payment in payment_list], 
+                            message='successfully retrieved payment list')), status_codes.status_ok_code

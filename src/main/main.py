@@ -36,6 +36,7 @@ def create_app(config=config_instance) -> Flask:
         from src.views.bouncers import BouncerView, BouncersPageView, BouncerListView
         from src.views.bouncers import BouncerFeedBackView, BouncerFeedbackListView
         from src.views.clients import ClientView, ClientsPageView, ClientsListView
+        from src.views.payments import PaymentView, PaymentListView
 
         # bouncers endpoints
         api.add_resource(BouncerView, '/api/v1/bouncer', endpoint='get_update_bouncer',
@@ -62,6 +63,18 @@ def create_app(config=config_instance) -> Flask:
 
         api.add_resource(BouncerFeedbackListView, '/api/v1/bouncer/feedback/list', endpoint='get_bouncers_list',
                          methods=['GET'])
+
+        # payment endpoints
+        api.add_resource(PaymentView, '/api/v1/payment/<str:payment_id>', endpoint='get_update_payment',
+                            methods=['GET', 'PUT', 'DELETE'])
+        api.add_resource(PaymentView, '/api/v1/payment', endpoint='create_payment',
+                            methods=['POST'])
+
+        api.add_resource(PaymentListView, '/api/v1/payment/list', endpoint='get_payment_list',
+                            methods=['GET'])
+
+        
+        # swagger documentation
 
         app.config.update({
             'APISPEC_SPEC': APISpec(
