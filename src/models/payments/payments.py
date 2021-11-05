@@ -70,3 +70,11 @@ class PaymentsModel(BaseModel):
         self.payment_approved = True
         self.time_approved = datetime.now()
         return self.put()
+    
+    def reject(self) -> bool:
+        """
+            Method to reject a payment
+        """
+        self.payment_approved = False
+        self.time_approved = None
+        return self.put()
