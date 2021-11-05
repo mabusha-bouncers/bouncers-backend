@@ -56,3 +56,10 @@ class PaymentsModel(BaseModel):
             Method to return a boolean representation of the object
         """
         return bool(self.payment_id)
+
+    def __eq__(self, other) -> bool:
+        """
+            Method to compare two objects
+        """
+        return self.payment_id == other.payment_id
+        
