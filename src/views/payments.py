@@ -49,3 +49,24 @@ class PaymentView(ViewModel):
     
 
 
+    @staticmethod
+    def put(payment_data: dict) -> tuple:
+        """ update a payment """
+        if payment_data is None:
+            raise InputError(description='Payment data is required')
+        
+        payment_instance: PaymentsModel = PaymentsModel.query(PaymentsModel.payment_id == payment_data['payment_id']).get()
+        if not isinstance(payment_instance, PaymentsModel):
+            return jsonify(dict(status=False, 
+                                message='payment with that payment id is not found')), status_codes.data_not_found_code
+
+        payment_instance.update(**payment_data)
+        key: ndb.Key = payment_instance.put()
+        if not isinstance(key, ndb.Key):
+            raise DataServiceError(description='Failed to update payment')
+        
+        return jsonify(dict(status=True, 
+                            payload=payment_instance.to_dict(), 
+                            message='successfully updated payment')), status_codes.successfully_updated_code
+
+    
