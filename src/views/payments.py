@@ -69,4 +69,17 @@ class PaymentView(ViewModel):
                             payload=payment_instance.to_dict(), 
                             message='successfully updated payment')), status_codes.successfully_updated_code
 
-    
+    @staticmethod
+    def delete(payment_id: str) -> tuple:
+        """ delete a payment """
+        if payment_id is None:
+            raise InputError(description='Payment ID is required')
+        
+        payment_instance: PaymentsModel = PaymentsModel.query(PaymentsModel.payment_id == payment_id).get()
+        if not isinstance(payment_instance, PaymentsModel):
+            return jsonify(dict(status=False, 
+                                message='payment with that payment id is not found')), status_codes.data_not_found_code
+
+        payment_instance.key.delete()
+        return jsonify(dict(status=True, 
+                            message='successfully deleted payment')), status_codes.status_ok_code
