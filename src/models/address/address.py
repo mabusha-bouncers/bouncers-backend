@@ -51,7 +51,7 @@ class AddressModel(BaseModel):
     address_id: str = ndb.StringProperty(indexed=True, required=True)
     street: str = ndb.StringProperty(indexed=True, required=True)
     city_town: str = ndb.StringProperty(indexed=True, required=True)
-    province = ndb.StringProperty(default=SAProvinceTypes.gauteng, choices=SAProvinceTypes.values(), indexed=True,
+    province = ndb.StringProperty(default=SAProvinceTypes.gauteng.value, choices=SAProvinceTypes.values(), indexed=True,
                                   required=True)
     country: str = ndb.StringProperty(default='south africa', required=True)
     postal_code: str = ndb.StringProperty(indexed=True, required=True)
