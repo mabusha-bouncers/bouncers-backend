@@ -100,9 +100,75 @@ class PaymentListView(ViewModel):
         """initialize the payment list view"""
         super().__init__(*args, **kwargs)
     
+    @staticmethod
     def get(self) -> tuple:
-        """ get a list of payments """
+        """ 
+        **return a list of payments**
+            returns a complete list of all payments every made by the system
+        """
         payment_list: list = PaymentsModel.query().fetch()
+        if not isinstance(payment_list, list):
+            return jsonify(dict(status=False, 
+                                message='failed to retrieve payment list')), status_codes.data_not_found_code
+        
+        return jsonify(dict(status=True, 
+                            payload=[payment.to_dict() for payment in payment_list], 
+                            message='successfully retrieved payment list')), status_codes.status_ok_code
+
+
+class PaymentListByClientView(ViewModel):
+    """
+        **Class PaymentListByClientView**
+            will return a list of payments made by a client
+            
+    """
+    methods = ['GET']
+
+    def __init__(self, *args, **kwargs):
+        """initialize the payment list view"""
+        super().__init__(*args, **kwargs)
+    
+    @staticmethod
+    def get(client_id: str) -> tuple:
+        """ 
+        **return a list of payments**
+            returns a complete list of all payments made by a client
+        """
+        if client_id is None:
+            raise InputError(description='Client ID is required')
+        
+        payment_list: list = PaymentsModel.query(PaymentsModel.client_id == client_id).fetch()
+        if not isinstance(payment_list, list):
+            return jsonify(dict(status=False, 
+                                message='failed to retrieve payment list')), status_codes.data_not_found_code
+        
+        return jsonify(dict(status=True, 
+                            payload=[payment.to_dict() for payment in payment_list], 
+                            message='successfully retrieved payment list')), status_codes.status_ok_code
+
+
+class PaymentListByClientAndDateView(ViewModel):
+    """.env"""
+    methods = ['GET']
+
+    def __init__(self, *args, **kwargs):
+        """initialize the payment list view"""
+        super().__init__(*args, **kwargs)
+    
+    @staticmethod
+    def get(client_id: str, date_created: str) -> tuple:
+        """ 
+        **return a list of payments**
+            returns a complete list of all payments made by a client
+        """
+        if client_id is None:
+            raise InputError(description='Client ID is required')
+        
+        if payment_date is None:
+            raise InputError(description='Date is required')
+        _date_created = date_string_to_date(date_created)
+        payment_list: list = PaymentsModel.query(PaymentsModel.client_id == client_id, 
+        PaymentsModel.date_created == _date_created).fetch()
         if not isinstance(payment_list, list):
             return jsonify(dict(status=False, 
                                 message='failed to retrieve payment list')), status_codes.data_not_found_code

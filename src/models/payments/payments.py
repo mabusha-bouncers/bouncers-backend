@@ -40,6 +40,7 @@ class PaymentsModel(BaseModel):
     payment_id: str = ndb.StringProperty()
     amount: AmountMixin = ndb.StructuredProperty(AmountMixin)
     payment_type: str = ndb.StringProperty(choices=PaymentTypes.choices())
+    date_created: date = ndb.DateProperty(auto_now_add=True)
     payment_approved: bool = ndb.ComputedProperty(lambda self: self.time_approved is not None)
     time_approved: datetime = ndb.DateTimeProperty()
     is_paid: bool = ndb.ComputedProperty(lambda self: self.time_paid is not None)
