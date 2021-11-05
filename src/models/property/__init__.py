@@ -62,7 +62,15 @@ class Events:
         """
         return requests.get(self.events_server_url).json()
 
-        
+    def process_events(self):
+        """
+            **process_events**
+                processes events from the events server
+
+            :return: the events fetched from the events server
+        """
+        events = self.fetch_events()
+
 class Util:
     """
         **Class Util**
