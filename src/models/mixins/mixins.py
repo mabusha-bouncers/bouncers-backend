@@ -101,6 +101,49 @@ class UserMixin(BaseModel):
     def __bool__(self) -> bool:
         return bool(self.uid) and bool(self.email)
 
+    def check_login(self, password: str) -> bool:
+        """
+        **Method check_login**
+            Check if the password is correct
+
+        **Parameters**
+            1. password: str -> password to check
+
+        **Returns**
+            True if password is correct
+            False if password is incorrect
+        """
+        return self.password == password
+
+    def check_email(self, email: str) -> bool:
+        """
+        **Method check_email**
+            Check if the email is correct
+
+        **Parameters**
+            1. email: str -> email to check
+
+        **Returns**
+            True if email is correct
+            False if email is incorrect
+        """
+        return self.email == email
+
+    def authorize_login(self, password: str, email: str) -> bool:
+        """
+        **Method authorize_login**
+            Check if login is authorized
+
+        **Parameters**
+            1. password: str -> password to check
+            2. email: str -> email to check
+
+        **Returns**
+            True if password & email are correct
+            False if password or email is incorrect
+        """
+        return self.check_login(password) and self.check_email(email)
+
 
 class FeedbackMixin(BaseModel):
     """
@@ -126,3 +169,22 @@ class FeedbackMixin(BaseModel):
     def feedback_list(self):
         """get_feedback_list protocol"""
         ...
+
+    def __str__(self) -> str:
+        return f"<Feedback {self.feedback_id} {self.feedback}"
+    
+    def __bool__(self) -> bool:
+        return bool(self.feedback_id) and bool(self.feedback)
+    
+    def __eq__(self, other) -> bool:
+        if self.__class__ != other.__class__:
+            return False
+        if self.client_uid != other.client_uid:
+            return False
+        if self.bouncer_uid != other.bouncer_uid:
+            return False
+        if self.feedback_id != other.feedback_id:
+            return False
+        if self.feedback != other.feedback:
+            return False
+        return True

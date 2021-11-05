@@ -56,6 +56,10 @@ class SchedulerModel(BaseModel):
     scheduled_day: date = ndb.DateProperty(auto_now_add=True)
     time_slot: str = ndb.StringProperty(choices=DailySlotsTypes.values())
     location_address_id: str = ndb.StringProperty(indexed=True, required=True)
+    time_created: datetime = ndb.DateTimeProperty(auto_now_add=True)
+    time_updated: datetime = ndb.DateTimeProperty(auto_now=True)
+
+    
 
 
 class BouncerScheduled(BaseModel):
@@ -69,4 +73,5 @@ class BouncerScheduled(BaseModel):
     """
     schedule_id: str = ndb.StringProperty(required=True)
     uid: str = ndb.StringProperty(required=True)
+    
 
