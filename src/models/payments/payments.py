@@ -62,4 +62,11 @@ class PaymentsModel(BaseModel):
             Method to compare two objects
         """
         return self.payment_id == other.payment_id
-        
+    
+    def approve(self) -> bool:
+        """
+            Method to approve a payment
+        """
+        self.payment_approved = True
+        self.time_approved = datetime.now()
+        return self.put()
