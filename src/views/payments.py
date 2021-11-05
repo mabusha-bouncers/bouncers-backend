@@ -148,7 +148,12 @@ class PaymentListByClientView(ViewModel):
 
 
 class PaymentListByClientAndDateView(ViewModel):
-    """.env"""
+    """
+        **Class PaymentListByClientAndDateView**
+            will return a list of payments made by a client in a specific date
+        
+
+    """
     methods = ['GET']
 
     def __init__(self, *args, **kwargs):
@@ -159,7 +164,7 @@ class PaymentListByClientAndDateView(ViewModel):
     def get(client_id: str, date_created: str) -> tuple:
         """ 
         **return a list of payments**
-            returns a complete list of all payments made by a client
+            returns a list of payments made by a client in a specific date
         """
         if client_id is None:
             raise InputError(description='Client ID is required')
