@@ -8,7 +8,11 @@ from src.models.payments import PaymentsModel
 from src.exceptions.exceptions import DataServiceError, InputError, status_codes
 
 class PaymentView(ViewModel):
-    """ Payment View Model """
+    """ 
+    **Class PaymentView**
+        Payment View Model , allows for the creation, viewing and updating of payments
+    
+    """
     methods = ['GET', 'POST', 'PUT', 'DELETE']
 
     @staticmethod
