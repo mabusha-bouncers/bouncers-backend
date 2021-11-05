@@ -73,5 +73,21 @@ class BouncerScheduled(BaseModel):
     """
     schedule_id: str = ndb.StringProperty(required=True)
     uid: str = ndb.StringProperty(required=True)
+    schedule_name: str = ndb.StringProperty(required=True)
+    is_active: bool = ndb.BooleanProperty(default=True)
+    time_created: datetime = ndb.DateTimeProperty(auto_now_add=True)
+    time_updated: datetime = ndb.DateTimeProperty(auto_now=True)
+
     
 
+    def __str__(self) -> str:
+        return f"{self.schedule_name} - {self.is_active} - {self.time_created}"
+    
+    def __bool__(self) -> bool:
+        return self.is_active and bool(self.uid) and bool(self.schedule_id)
+
+    def __eq__(self, other) -> bool:
+        return self.uid == other.uid and self.schedule_id == other.schedule_id
+    
+    
+    
