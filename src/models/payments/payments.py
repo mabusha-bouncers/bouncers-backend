@@ -40,13 +40,19 @@ class PaymentsModel(BaseModel):
     payment_id: str = ndb.StringProperty()
     amount: AmountMixin = ndb.StructuredProperty(AmountMixin)
     payment_type: str = ndb.StringProperty(choices=PaymentTypes.choices())
+    payment_approved: bool = ndb.BooleanProperty(default=False)
+    time_approved: datetime = ndb.DateTimeProperty()
     date_paid: date = ndb.DateProperty(auto_now_add=True)
     time_paid: time = ndb.TimeProperty(auto_now_add=True)
 
-    
-    def __init__(self) -> None:
-        super(PaymentsModel, self).__init__
-    
-
     def __str__(self) -> str:
-        return f""
+        """
+            Method to return a string representation of the object
+        """
+        return f"{self.payment_id} - {self.amount} - {self.payment_type}"
+
+    def __bool__(self) -> bool:
+        """
+            Method to return a boolean representation of the object
+        """
+        return bool(self.payment_id)
