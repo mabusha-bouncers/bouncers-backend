@@ -40,10 +40,10 @@ class PaymentsModel(BaseModel):
     payment_id: str = ndb.StringProperty()
     amount: AmountMixin = ndb.StructuredProperty(AmountMixin)
     payment_type: str = ndb.StringProperty(choices=PaymentTypes.choices())
-    payment_approved: bool = ndb.BooleanProperty(default=False)
+    payment_approved: bool = ndb.ComputedProperty(lambda self: self.time_approved is not None)
     time_approved: datetime = ndb.DateTimeProperty()
-    date_paid: date = ndb.DateProperty(auto_now_add=True)
-    time_paid: time = ndb.TimeProperty(auto_now_add=True)
+    is_paid: bool = ndb.ComputedProperty(lambda self: self.time_paid is not None)
+    time_paid: datetime = ndb.DateTimeProperty()
 
     def __str__(self) -> str:
         """
@@ -67,7 +67,6 @@ class PaymentsModel(BaseModel):
         """
             Method to approve a payment
         """
-        self.payment_approved = True
         self.time_approved = datetime.now()
         return self.put()
     
@@ -75,6 +74,12 @@ class PaymentsModel(BaseModel):
         """
             Method to reject a payment
         """
-        self.payment_approved = False
         self.time_approved = None
+        return self.put()
+    
+    def paid(self) -> bool:
+        """
+            Method to mark a payment as paid
+        """
+        self.time_paid = datetime.now().time()
         return self.put()
