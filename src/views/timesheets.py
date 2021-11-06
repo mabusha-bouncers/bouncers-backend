@@ -92,7 +92,7 @@ class TimeSheetView(ViewModel):
         timesheet_instance: TimeSheetModel = TimeSheetModel.query(TimeSheetModel.timesheet_id == timesheet_id).get()
         if not isinstance(timesheet_instance, TimeSheetModel) or not bool(timesheet_instance):
             return jsonify(dict(status=True, 
-                                message='No timesheet found for this bouncer')), status_codes.data_not_found_code
+                                message='No timesheet found wit that id')), status_codes.data_not_found_code
 
         timesheet_instance.key.delete()
         return jsonify(dict(status=True, 
