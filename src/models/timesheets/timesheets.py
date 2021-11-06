@@ -45,6 +45,7 @@ class TimeSheetModel(BaseModel):
     """
         **TimeSheetModel**
             keeps track of hours worked per bouncer / security guard
+            and total pay for those hours
 
         `PARAMETERS`
             uid: unique user identifier
