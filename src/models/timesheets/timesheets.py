@@ -57,6 +57,7 @@ class TimeSheetModel(BaseModel):
             time_sheet_paid: bool -> False as default True when time worked has been paid
     """
     uid: str = ndb.StringProperty(indexed=True)
+    timesheet_id: str = ndb.StringProperty(indexed=True)
     day_of_week: int = ndb.IntegerProperty(choices=DaysOfWeekType.values(), default=DaysOfWeekType.monday.value)
     today: date = ndb.DateProperty()
     time_on_duty: datetime = ndb.DateTimeProperty()
