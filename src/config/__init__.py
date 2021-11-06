@@ -49,6 +49,9 @@ class Config(Singleton):
         self.CACHE_DEFAULT_TIMEOUT: int = 60 * 60 * 6
         self.MEM_CACHE_SERVER_URI: str = ""
         self.GOOGLE_APPLICATION_CREDENTIALS: str = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")
+        self.HOURLY_RATE: float = 11
+        self.DAILY_RATE: float = self.HOURLY_RATE * 24
+
         # NOTE : setting IS_PRODUCTION here - could find a better way of doing this rather
         # than depending on the OS
         if "DESKTOP-B52R0UU" == os.environ.get('COMPUTERNAME'):

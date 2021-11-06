@@ -59,16 +59,38 @@ class TimeSheetModel(BaseModel):
     day_of_week: int = ndb.IntegerProperty(choices=DaysOfWeekType.values(), default=DaysOfWeekType.monday.value)
     today: date = ndb.DateProperty()
     time_on_duty: datetime = ndb.DateTimeProperty()
-    time_of_duty: datetime = ndb.DateTimeProperty()
-    time_worked_hours: int = ndb.IntegerProperty()
-    hourly_rate: int = ndb.IntegerProperty()
+    time_of_duty: datetime = ndb.DateTimeProperty()    
+    hourly_rate: int = ndb.IntegerProperty(default=config_instance.HOURLY_RATE)
     time_sheet_paid: bool = ndb.BooleanProperty(default=False)
 
     #   TODO add overtime rates
 
-    def total_earned(self) -> AmountMixin:
+    @property
+    def time_worked_hours(self) -> int:
         """
-        **total_earned**
+        **time_worked_hours**
+            calculates the total time worked in hours
+        :return: int -> total time worked in hours
+        """
+        if self.time_of_duty and self.time_on_duty:
+            return (self.time_of_duty - self.time_on_duty).seconds // 3600
+        return 0
+
+    @property
+    def time_worked_minutes(self) -> int:
+        """
+        **time_worked_minutes**
+            calculates the total time worked in minutes
+        :return: int -> total time worked in minutes
+        """
+        if self.time_of_duty and self.time_on_duty:
+            return (self.time_of_duty - self.time_on_duty).seconds // 60
+        return 0
+
+    @property
+    def calculate_pay(self) -> AmountMixin:
+        """
+        **calculate_pay**
             will return amount earned in currency format
             see AmountMixin
         :return:
