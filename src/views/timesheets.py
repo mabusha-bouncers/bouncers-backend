@@ -60,7 +60,7 @@ class TimeSheetView(ViewModel):
     @staticmethod
     def put(timesheet_data: dict) -> tuple:
         """ **put method**
-            allows users to update their timesheets
+                allows users to update their timesheets
         """
         if not timesheet_data:
             raise InputError('Timesheet data is required')
@@ -105,6 +105,9 @@ class TimeSheetByBouncerView(ViewModel):
     """
     methods = ['GET']
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
     def get(self, bouncer_id: str) -> tuple:
         """ **get method**
             allows users to view their timesheets
@@ -121,11 +124,15 @@ class TimeSheetByBouncerView(ViewModel):
                             payload=timesheet_list, 
                             message='')), status_codes.status_ok_code
 
+
 class TimeSheetByPeriodView(ViewModel):
     """ **Class TimeSheetListView**
             allows user to access timesheet lists
     """
     methods = ['GET']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
     def get(self, bouncer_id: str, start_date: str, end_date: str) -> tuple:
         """ **get method**
@@ -154,3 +161,34 @@ class TimeSheetByPeriodView(ViewModel):
         return jsonify(dict(status=True, 
                             payload=timesheet_list, 
                             message='')), status_codes.status_ok_code
+
+
+class TimeSheetByBouncerAndDateView(ViewModel):
+    """.env"""
+    methods = ['GET']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+
+    def get(self, bouncer_id: str, date: str) -> tuple:
+        """ **get method**
+            allows users to view their timesheets
+        """
+        if not bouncer_id:
+            raise InputError('Bouncer ID is required')
+
+        if not date:
+            raise InputError('Date is required')
+
+        date_datetime: datetime = datetime.strptime(date, '%Y-%m-%d')
+
+        timesheet_list: list =[timesheet.to_dict() for timesheet in TimeSheetModel.query(TimeSheetModel.bouncer_id == bouncer_id,
+                                                                                          TimeSheetModel.time_on_duty == date_datetime).fetch()]
+        if not isinstance(timesheet_list, list) or not bool(timesheet_list):
+            return jsonify(dict(status=True, 
+                                message='No timesheets found for that bouncer')), status_codes.data_not_found_code
+
+        return jsonify(dict(status=True, 
+                            payload=timesheet_list, 
+                            message='successfully retrieved time sheet by bouncer and date')), status_codes.status_ok_code
