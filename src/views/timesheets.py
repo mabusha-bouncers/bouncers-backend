@@ -164,7 +164,11 @@ class TimeSheetByPeriodView(ViewModel):
 
 
 class TimeSheetByBouncerAndDateView(ViewModel):
-    """.env"""
+    """
+        **Class TimeSheetByBouncerAndDateView**
+            allows user to access timesheets by bouncer and date
+
+    """
     methods = ['GET']
 
     def __init__(self, *args, **kwargs):
