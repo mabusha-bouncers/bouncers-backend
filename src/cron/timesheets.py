@@ -62,3 +62,42 @@ class CreatePaySlip:
         """
         pass
 
+
+
+class SendPaySlip:
+    """
+        **SendPaySlip**
+            this class will send the payslip by email
+    """
+    def __init__(self):
+        """
+            **__init__**
+                this method will initialize the class
+        """
+        pass
+
+    def run(self):
+        """
+            **run**
+                this method will run the cron job
+        """
+        pass
+
+class SendPayNotifications:
+    """
+        **SendPayNotifications**
+            this class will send the payment Notification by email & sms
+    """
+    def __init__(self):
+        """
+            **__init__**
+                this method will initialize the class
+        """
+        pass
+
+    def run(self):
+        """
+            **run**
+                this method will run the cron job
+        """
+        pass
