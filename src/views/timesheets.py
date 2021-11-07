@@ -98,3 +98,25 @@ class TimeSheetView(ViewModel):
         return jsonify(dict(status=True, 
                             message='successfully deleted timesheet')), status_codes.successfully_updated_code
 
+
+class TimeSheetByBouncerView(ViewModel):
+    """ **Class TimeSheetListView**
+            allows user to access timesheet lists
+    """
+    methods = ['GET']
+
+    def get(self, bouncer_id: str) -> tuple:
+        """ **get method**
+            allows users to view their timesheets
+        """
+        if not bouncer_id:
+            raise InputError('Bouncer ID is required')
+
+        timesheet_list: list = TimeSheetModel.query(TimeSheetModel.bouncer_id == bouncer_id).fetch()
+        if not isinstance(timesheet_list, list) or not bool(timesheet_list):
+            return jsonify(dict(status=True, 
+                                message='No timesheets found for that bouncer')), status_codes.data_not_found_code
+
+        return jsonify(dict(status=True, 
+                            payload=timesheet_list, 
+                            message='')), status_codes.status_ok_code
