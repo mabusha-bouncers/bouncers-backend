@@ -3,6 +3,8 @@
         this module will run 
 
 """
+from src.models.timesheets import TimeSheetModel
+
 
 class CalculateMonthlyPayroll:
     """
@@ -21,7 +23,13 @@ class CalculateMonthlyPayroll:
             **run**
                 this method will run the cron job
         """
-        pass
+        start_datetime: datetime = datetime.now().date()
+        end_datetime: datetime = datetime.now().date()
+        monthly_timesheets: list = TimeSheetModel.query(TimeSheetModel.time_on_duty >= start_datetime, 
+                                                        TimeSheetModel.time_of_duty <= end_datetime).fetch()
+
+        pay_list: list =[(timesheet.calculate_pay(), timesheet.uid) for timesheet in monthly_timesheets]
+
 
 class CalculateWeeklyPayroll:
     """
