@@ -112,7 +112,41 @@ class TimeSheetByBouncerView(ViewModel):
         if not bouncer_id:
             raise InputError('Bouncer ID is required')
 
-        timesheet_list: list = TimeSheetModel.query(TimeSheetModel.bouncer_id == bouncer_id).fetch()
+        timesheet_list: list =[timesheet.to_dict() for timesheet in TimeSheetModel.query(TimeSheetModel.bouncer_id == bouncer_id).fetch()]
+        if not isinstance(timesheet_list, list) or not bool(timesheet_list):
+            return jsonify(dict(status=True, 
+                                message='No timesheets found for that bouncer')), status_codes.data_not_found_code
+
+        return jsonify(dict(status=True, 
+                            payload=timesheet_list, 
+                            message='')), status_codes.status_ok_code
+
+class TimeSheetByPeriodView(ViewModel):
+    """ **Class TimeSheetListView**
+            allows user to access timesheet lists
+    """
+    methods = ['GET']
+
+    def get(self, bouncer_id: str, start_date: str, end_date: str) -> tuple:
+        """ **get method**
+            allows users to view their timesheets
+        """
+        if not bouncer_id:
+            raise InputError('Bouncer ID is required')
+
+        if not start_date:
+            raise InputError('Start date is required')
+
+        if not end_date:
+            raise InputError('End date is required')
+
+
+        start_datetime: datetime = datetime.strptime(start_date, '%Y-%m-%d')
+        end_datetime: datetime = datetime.strptime(end_date, '%Y-%m-%d')
+
+        timesheet_list: list =[timesheet.to_dict() for timesheet in TimeSheetModel.query(TimeSheetModel.bouncer_id == bouncer_id,
+                                                                                          TimeSheetModel.time_on_duty >= start_datetime,
+                                                                                          TimeSheetModel.time_of_duty <= end_datetime).fetch()]
         if not isinstance(timesheet_list, list) or not bool(timesheet_list):
             return jsonify(dict(status=True, 
                                 message='No timesheets found for that bouncer')), status_codes.data_not_found_code
