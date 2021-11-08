@@ -5,7 +5,8 @@
 
 class BankDetails(BaseModel):
     """
-        A class to store bank details
+        **BankDetails**
+            A class to store bank details, for the processing of payrolls
     """
     uid: str = ndb.StringProperty(indexed=True, required=True)
     account_name = ndb.StringProperty(required=True)
@@ -13,7 +14,17 @@ class BankDetails(BaseModel):
     bank_name = ndb.StringProperty(required=True)
     account_number = ndb.StringProperty(required=True)
     branch_code = ndb.StringProperty(required=True)
+
+    def __str__(self) -> str:
+        return f"{self.account_name} - {self.bank_name} - {self.account_number}"
+
+    def __bool__(self) -> bool:
+        return bool(self.account_name) and bool(self.bank_name) and bool(self.account_number) and bool(self.uid)    
+
+    def __eq__(self, other: 'BankDetails') -> bool:
+        return self.uid == other.uid
     
+
 
 class PayrollProcessing(BaseModel):
     """
@@ -62,5 +73,16 @@ class PayrollProcessing(BaseModel):
         ** Make a payment **
             A method to make payment
         """
+        pass
+
+
+    def __str__(self) -> str:
+        return f"{self.amount_to_pay} - {self.is_paid} - {self.date_paid} - {self.date_created} - {self.date_updated}"
+
+    def __eq__(self, other: 'PayrollProcessing') -> bool:
+        return self.uid == other.uid
+    
+
+
         
 
