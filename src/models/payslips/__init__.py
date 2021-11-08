@@ -2,15 +2,9 @@
     **Payslips**
         this is a model for payslips database table
 
-        1. Vehicle and Shooter War Rooms
-        2. Garrison Hall Building
-        3. Anti Missilie Defense Center
-        4. Silo 
-        5. Blast Missile Factory
-        if any of this buildings is still at a low level choose the one you want to do and get it up to level 10 2 will be better
-
 """
 from src.models.basemodel import BaseModel
+from src.models.mixins import AmountMixin
 from google.cloud import ndb
 
 
@@ -23,11 +17,11 @@ class PaySlip(BaseModel):
     uid: str = ndb.StringProperty(indexed=True, required=True)
     employee_id: str = ndb.StringProperty(indexed=True, required=True)
     pay_date: date = ndb.DateProperty(indexed=True, required=True)
-    hours: int = ndb.IntegerProperty(indexed=True, required=True)
-    rate: int = ndb.IntegerProperty(indexed=True, required=True)
-    amount: int = ndb.IntegerProperty(indexed=True, required=True)
-    bonus: int = ndb.IntegerProperty(indexed=True, required=True)
-    total: int = ndb.IntegerProperty(indexed=True, required=True)
+    minutes: int = ndb.IntegerProperty(indexed=True, required=True)
+    rate: float = ndb.FloatProperty(indexed=True, required=True)
+    amount: AmountMixin = ndb.StructuredProperty(AmountMixin, required=True)
+    bonus: AmountMixin = ndb.StructuredProperty(AmountMixin, required=True)
+    total: AmountMixin = ndb.StructuredProperty(AmountMixin, required=True)
     is_bonus_paid: bool = ndb.BooleanProperty(indexed=True, required=True)
     is_paid_to_bouncer: bool = ndb.BooleanProperty(indexed=True, required=True)
     
