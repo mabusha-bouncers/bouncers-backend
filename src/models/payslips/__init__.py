@@ -20,10 +20,9 @@ class PaySlip(BaseModel):
     minutes: int = ndb.IntegerProperty(indexed=True, required=True)
     rate: float = ndb.FloatProperty(indexed=True, required=True)
     bonus: AmountMixin = ndb.StructuredProperty(AmountMixin, required=True)
-    total: AmountMixin = ndb.StructuredProperty(AmountMixin, required=True)
     is_bonus_paid: bool = ndb.BooleanProperty(indexed=True, required=True)
     is_paid_to_bouncer: bool = ndb.BooleanProperty(indexed=True, required=True)
-    
+        
 
     @property
     def hours(self) -> float:
@@ -41,6 +40,15 @@ class PaySlip(BaseModel):
         """
         # TODO have to make rate dependent on bouncer rating
         return AmountMixin(amount_in_cents=self.hours * self.rate * 100, currency=config_instance.currency)
+
+    @property
+    def total_amount(self) -> AmountMixin:
+        """
+            **total_amount**
+                returns total amount to pay to bouncers  based on rate and hours worked + bonus 
+                if bonus is to be paid separately then use total and bonus figures separately
+        """
+        return AmountMixin(amount_in_cents=self.amount.amount_in_cents + self.bonus.amount_in_cents, currency=config_instance.currency)
 
     @property
     def bouncer_details(self) -> Optional[dict]:
