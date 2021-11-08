@@ -22,7 +22,7 @@ class PaySlip(BaseModel):
     bonus: AmountMixin = ndb.StructuredProperty(AmountMixin, required=True)
     is_bonus_paid: bool = ndb.BooleanProperty(indexed=True, required=True)
     is_paid_to_bouncer: bool = ndb.BooleanProperty(indexed=True, required=True)
-        
+
 
     @property
     def hours(self) -> float:
@@ -33,10 +33,10 @@ class PaySlip(BaseModel):
         return self.minutes / 60
 
     @property
-    def amount(self) -> AmountMixin:
+    def normal_pay(self) -> AmountMixin:
         """
-            **amount**
-                returns amount to pay to bouncers  based on rate and hours worked
+            **normal pay amount**
+                returns amount to pay to bouncers based on rate and hours worked
         """
         # TODO have to make rate dependent on bouncer rating
         return AmountMixin(amount_in_cents=self.hours * self.rate * 100, currency=config_instance.currency)
@@ -48,7 +48,7 @@ class PaySlip(BaseModel):
                 returns total amount to pay to bouncers  based on rate and hours worked + bonus 
                 if bonus is to be paid separately then use total and bonus figures separately
         """
-        return AmountMixin(amount_in_cents=self.amount.amount_in_cents + self.bonus.amount_in_cents, currency=config_instance.currency)
+        return AmountMixin(amount_in_cents=self.normal_pay.amount_in_cents + self.bonus.amount_in_cents, currency=config_instance.currency)
 
     @property
     def bouncer_details(self) -> Optional[dict]:
@@ -63,7 +63,7 @@ class PaySlip(BaseModel):
         return None
         
 
-    def pay_bouncer(self) -> bool:
+    def pay_normal_pay_to_bouncer(self) -> bool:
         """
             **pay_bouncer**
                 pays bouncer
@@ -71,7 +71,7 @@ class PaySlip(BaseModel):
         from src.models.users.bouncer import BouncerModel
         bouncer_instance = BouncerModel.query(BouncerModel.uid == self.uid).get()
         if isinstance(bouncer_instance, BouncerModel) and bool(bouncer_instance):
-            bouncer_instance.pay_salary(self.total)
+            bouncer_instance.pay_salary(self.normal_pay)
             self.is_paid_to_bouncer = True
             self.put()
             return True
@@ -93,4 +93,17 @@ class PaySlip(BaseModel):
 
 
 
-    
+    def pay_total_amount_to_bouncer(self) -> bool:
+        """
+            **pay_total_amount_to_bouncer**
+                pays bouncer total amount
+        """
+        from src.models.users.bouncer import BouncerModel
+        bouncer_instance = BouncerModel.query(BouncerModel.uid == self.uid).get()
+        if isinstance(bouncer_instance, BouncerModel) and bool(bouncer_instance):
+            bouncer_instance.pay_salary(self.normal_pay)
+            bouncer_instance.pay_bonus(self.bonus)
+            self.is_paid_to_bouncer = True
+            self.put()
+            return True
+        return False
