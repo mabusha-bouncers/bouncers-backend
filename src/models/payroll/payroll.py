@@ -35,6 +35,20 @@ class PayrollProcessing(BaseModel):
         """
         bank_details = BankDetails.query(BankDetails.uid == self.uid).fetch()
         return bank_details.to_dict()
+    
+    def add_bank_details(self, bank_details: dict):
+        """
+        ** Add bank details **
+            A method to add bank details
+        """
+        bank_details = BankDetails.query(BankDetails.uid == self.uid).fetch()
+        if isinstance(bank_details, BankDetails) and bool(bank_details):
+            return bank_details
+        else:
+            bank_details = BankDetails(uid=self.uid, **bank_details)
+            bank_details.put()
+            return bank_details
+        
 
     def send_payment_notification(self):
         """
@@ -42,4 +56,11 @@ class PayrollProcessing(BaseModel):
             A method to send payment notification
         """
         pass
+
+    def make_payment(self):
+        """
+        ** Make a payment **
+            A method to make payment
+        """
+        
 

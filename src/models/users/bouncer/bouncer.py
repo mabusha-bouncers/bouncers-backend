@@ -101,7 +101,7 @@ class BouncerModel(UserModel):
                 pays to bouncer the bonus worked by the bouncer
             
         """
-        PayrollProcessing.add_bonus_pay(amount, self.uid)
+        PayrollProcessing().add_bonus_pay(amount, self.uid)
 
 
     def pay_salary(self, amount: AmountMixin) -> None:
@@ -109,7 +109,7 @@ class BouncerModel(UserModel):
             **pay_salary**
                 pays to bouncer the amount worked by bouncer
         """
-        PayrollProcessing.add_salary_pay(amount, self.uid)
+        PayrollProcessing().add_salary_pay(amount, self.uid)
 
 
     def __str__(self) -> str:
