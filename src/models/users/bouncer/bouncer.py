@@ -20,6 +20,7 @@ from src.models.context import get_client
 from src.models.mixins.mixins import FeedbackMixin, AmountMixin
 from src.models.users import UserModel
 from src.utils.utils import return_ttl
+from src.models.payroll.payroll import PayrollProcessing
 
 
 class BouncerRatingTypes(Enum):
@@ -94,12 +95,22 @@ class BouncerModel(UserModel):
         """bouncer rating in words"""
         return [_rating.name for _rating in BouncerRatingTypes.types() if _rating == self.rating][0]
 
-    def compute_pay(self) -> AmountMixin:
+    def pay_bonus(self, amount: AmountMixin) -> None:
         """
-            **compute_pay**
-                computes the pay of a bouncer at any specific time
+            **pay_bonus**
+                pays to bouncer the bonus worked by the bouncer
+            
         """
-        pass
+        PayrollProcessing.add_bonus_pay(amount, self.uid)
+
+
+    def pay_salary(self, amount: AmountMixin) -> None:
+        """
+            **pay_salary**
+                pays to bouncer the amount worked by bouncer
+        """
+        PayrollProcessing.add_salary_pay(amount, self.uid)
+
 
     def __str__(self) -> str:
         return f"{super().__str__()} available: {self.available},  contact_preference: {self.contact_preference}" \
