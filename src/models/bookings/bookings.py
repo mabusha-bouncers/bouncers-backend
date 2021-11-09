@@ -25,5 +25,7 @@ class BookingsModel(BaseModel):
     time_booked: time = ndb.TimeProperty(auto_now_add=True)
     
 
+    
+
 
 

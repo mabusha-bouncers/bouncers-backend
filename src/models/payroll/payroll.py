@@ -32,10 +32,10 @@ class PayrollProcessing(BaseModel):
     """
     uid: str = ndb.StringProperty(required=True)
     amount_to_pay: AmountMixin = ndb.StructuredProperty(AmountMixin, required=True)
-    is_paid: bool = ndb.BooleanProperty(required=True)
+    is_paid: bool = ndb.BooleanProperty(default=False, required=True)
     date_paid: datetime.date = ndb.DateProperty(required=True)
-    date_created: datetime.date = ndb.DateProperty(required=True)
-    date_updated: datetime.date = ndb.DateProperty(required=True)
+    date_created: datetime.date = ndb.DateProperty(auto_now_add=True)
+    date_updated: datetime.date = ndb.DateProperty(auto_now=True)
 
 
     @property

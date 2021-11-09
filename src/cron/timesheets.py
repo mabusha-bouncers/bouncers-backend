@@ -29,6 +29,10 @@ class CalculateMonthlyPayroll:
                                                         TimeSheetModel.time_of_duty <= end_datetime).fetch()
 
         pay_list: list =[(timesheet.calculate_pay(), timesheet.uid) for timesheet in monthly_timesheets]
+        for pay, uid in pay_list:
+            payroll: PayrollProcessing = PayrollProcessing(uid=uid, amount_to_pay=pay)
+            # TODO: This is very very slow i need to put this asynchronously
+            payroll.put()
 
 
 class CalculateWeeklyPayroll:
