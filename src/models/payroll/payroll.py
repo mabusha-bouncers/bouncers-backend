@@ -26,7 +26,7 @@ class BankDetails(BaseModel):
     
 
 
-class PayrollProcessing(BaseModel):
+class PayrollProcessingModel(BaseModel):
     """
         A class to process payrolls
     """
