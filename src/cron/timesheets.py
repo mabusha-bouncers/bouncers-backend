@@ -69,7 +69,7 @@ class CalculateMonthlyPayroll(CronJobs):
         return
 
 
-class CalculateWeeklyPayroll:
+class CalculateWeeklyPayroll(CronJobs):
     """
         **CalculateWeeklyPayroll**
             this class will calculate the weekly payroll    
@@ -96,7 +96,15 @@ class CalculateWeeklyPayroll:
         end_date: datetime = date_now
         weekly_timesheets: list = TimeSheetModel.query(TimeSheetModel.time_on_duty >= start_date, 
                                                         TimeSheetModel.time_of_duty <= end_date).fetch()    
-                                                                
+                                                        
+        pay_list: list =[(timesheet.calculate_pay(), timesheet.uid) for timesheet in monthly_timesheets]
+        _pay_routines: list = []
+        for pay, uid in pay_list:
+            payroll: PayrollProcessingModel = PayrollProcessingModel(uid=uid, amount_to_pay=pay)
+            # Using coroutine to save all the PayRolls at once
+            _pay_routines.append(self.put_model(payroll))
+        asyncio.gather(*_pay_routines)
+        return
         
 
 
