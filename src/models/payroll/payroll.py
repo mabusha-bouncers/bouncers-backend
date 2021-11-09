@@ -71,7 +71,7 @@ class PayrollProcessing(BaseModel):
     def make_payment(self):
         """
         ** Make a payment **
-            A method to make payment
+            A method to be called after payment is actually sent to bouncers bank account
         """
         pass
 

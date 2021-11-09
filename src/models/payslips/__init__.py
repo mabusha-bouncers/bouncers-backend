@@ -39,7 +39,7 @@ class PaySlip(BaseModel):
                 returns amount to pay to bouncers based on rate and hours worked
         """
         # TODO have to make rate dependent on bouncer rating
-        return AmountMixin(amount_in_cents=self.hours * self.rate * 100, currency=config_instance.currency)
+        return AmountMixin(amount_in_cents=int(self.hours * self.rate * 100), currency=config_instance.currency)
 
     @property
     def total_amount(self) -> AmountMixin:
