@@ -79,6 +79,7 @@ class CalculateWeeklyPayroll(CronJobs):
             **__init__**
                 this method will initialize the class
         """
+        super().__init__()
         self._friday = 6
         
 
@@ -108,7 +109,7 @@ class CalculateWeeklyPayroll(CronJobs):
         
 
 
-class CreatePaySlip:
+class CreatePaySlip(CronJobs):
     """
         **CreatePaySlip**
             this class will create the payslip
@@ -118,6 +119,7 @@ class CreatePaySlip:
             **__init__**
                 this method will initialize the class
         """
+        super().__init__()
         pass
 
     def run(self):
@@ -129,7 +131,7 @@ class CreatePaySlip:
 
 
 
-class SendPaySlip:
+class SendPaySlip(CronJobs):
     """
         **SendPaySlip**
             this class will send the payslip by email
@@ -149,7 +151,7 @@ class SendPaySlip:
         """
         pass
 
-class SendPayNotifications:
+class SendPayNotifications(CronJobs):
     """
         **SendPayNotifications**
             this class will send the payment Notification by email & sms
