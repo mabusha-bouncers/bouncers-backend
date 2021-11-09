@@ -92,6 +92,11 @@ class CalculateWeeklyPayroll:
             # if not friday then return
             return
         
+        start_date: datetime = date_now - timedelta(days=7)
+        end_date: datetime = date_now
+        weekly_timesheets: list = TimeSheetModel.query(TimeSheetModel.time_on_duty >= start_date, 
+                                                        TimeSheetModel.time_of_duty <= end_date).fetch()    
+                                                                
         
 
 
