@@ -22,6 +22,7 @@ class PaySlip(BaseModel):
     bonus: AmountMixin = ndb.StructuredProperty(AmountMixin, required=True)
     is_bonus_paid: bool = ndb.BooleanProperty(indexed=True, required=True)
     is_paid_to_bouncer: bool = ndb.BooleanProperty(indexed=True, required=True)
+    
 
 
     @property
