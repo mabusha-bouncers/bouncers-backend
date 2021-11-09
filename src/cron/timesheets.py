@@ -19,7 +19,7 @@ class CronJobs:
             **__init__**
                 this method will initialize the class
         """
-        pass
+        super().__init__()        
     
     @staticmethod
     async def put_model(model):
@@ -73,6 +73,7 @@ class CalculateWeeklyPayroll(CronJobs):
     """
         **CalculateWeeklyPayroll**
             this class will calculate the weekly payroll    
+
     """
     def __init__(self):
         """
@@ -120,7 +121,6 @@ class CreatePaySlip(CronJobs):
                 this method will initialize the class
         """
         super().__init__()
-        pass
 
     def run(self):
         """
@@ -142,7 +142,7 @@ class SendPaySlip(CronJobs):
             **__init__**
                 this method will initialize the class
         """
-        pass
+        super().__init__()
 
     def run(self):
         """
@@ -161,7 +161,8 @@ class SendPayNotifications(CronJobs):
             **__init__**
                 this method will initialize the class
         """
-        pass
+        super().__init__()
+
 
     def run(self):
         """
@@ -169,3 +170,4 @@ class SendPayNotifications(CronJobs):
                 this method will run the cron job
         """
         pass
+    
