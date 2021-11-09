@@ -3,6 +3,7 @@
         this module will run 
 
 """
+import asyncio
 from src.models.timesheets import TimeSheetModel
 from src.models.payroll import PayrollProcessingModel
 from src.models.context import get_client
@@ -27,7 +28,8 @@ class CronJobs:
                 this method will put the asynchronously to the database model
         """
         with get_client().context() as context:
-            await model.put_async()
+            return model.put_async()
+
         
 
 
