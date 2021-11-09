@@ -66,7 +66,7 @@ class PaySlip(BaseModel):
     def pay_normal_pay_to_bouncer(self) -> bool:
         """
             **pay_bouncer**
-                pays bouncer
+                pays bouncer normal pay
         """
         from src.models.users.bouncer import BouncerModel
         bouncer_instance = BouncerModel.query(BouncerModel.uid == self.uid).get()
@@ -96,7 +96,7 @@ class PaySlip(BaseModel):
     def pay_total_amount_to_bouncer(self) -> bool:
         """
             **pay_total_amount_to_bouncer**
-                pays bouncer total amount
+                pays bouncer total amount   
         """
         from src.models.users.bouncer import BouncerModel
         bouncer_instance = BouncerModel.query(BouncerModel.uid == self.uid).get()
