@@ -55,25 +55,25 @@ def create_app(config=config_instance) -> Flask:
                          methods=['GET'])
 
         # bouncers feedback endpoints
-        api.add_resource(BouncerFeedBackView, '/api/v1/bouncer/feedback/<str:feedback_id>', endpoint='get_update_bouncer_feedback',
+        api.add_resource(BouncerFeedBackView, '/api/v1/bouncer/feedback/<string:feedback_id>',
+                         endpoint='get_update_bouncer_feedback',
                          methods=['GET', 'PUT', 'DELETE'])
 
         api.add_resource(BouncerFeedBackView, '/api/v1/bouncer/feedback', endpoint='create_bouncer_feedback',
                          methods=['POST'])
 
-        api.add_resource(BouncerFeedbackListView, '/api/v1/bouncer/feedback/list', endpoint='get_bouncers_list',
+        api.add_resource(BouncerFeedbackListView, '/api/v1/bouncer/feedback/list', endpoint='get_bouncer_feedback_list',
                          methods=['GET'])
 
         # payment endpoints
-        api.add_resource(PaymentView, '/api/v1/payment/<str:payment_id>', endpoint='get_update_payment',
-                            methods=['GET', 'PUT', 'DELETE'])
+        api.add_resource(PaymentView, '/api/v1/payment/<string:payment_id>', endpoint='get_update_payment',
+                         methods=['GET', 'PUT', 'DELETE'])
         api.add_resource(PaymentView, '/api/v1/payment', endpoint='create_payment',
-                            methods=['POST'])
+                         methods=['POST'])
 
         api.add_resource(PaymentListView, '/api/v1/payment/list', endpoint='get_payment_list',
-                            methods=['GET'])
+                         methods=['GET'])
 
-        
         # swagger documentation
 
         app.config.update({
