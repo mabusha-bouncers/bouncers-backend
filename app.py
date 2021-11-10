@@ -7,6 +7,13 @@ from src.main import create_app
 
 app = create_app()
 
+
+@app.route('/_ah/warmup')
+def warmup():
+    """warm app handler for google cloud platform"""
+    return 'OK', 200
+
+
 if __name__ == '__main__':
     """
         Runs a flask application 

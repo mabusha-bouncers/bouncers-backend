@@ -2,6 +2,8 @@
     Module serves to create a payment object
     in order to track client payments
 """
+from datetime import date, datetime
+from typing import List
 from google.cloud import ndb
 from src.models.mixins import AmountMixin
 from src.models.basemodel import BaseModel
@@ -22,6 +24,7 @@ class PaymentTypes(Enum):
             Method to return a list of payment choices
         """
         return [choice.name for choice in cls]
+
 
 class PaymentsModel(BaseModel):
     """
@@ -63,24 +66,24 @@ class PaymentsModel(BaseModel):
             Method to compare two objects
         """
         return self.payment_id == other.payment_id
-    
+
     def approve(self) -> bool:
         """
             Method to approve a payment
         """
         self.time_approved = datetime.now()
         return self.put()
-    
+
     def reject(self) -> bool:
         """
             Method to reject a payment
         """
         self.time_approved = None
         return self.put()
-    
+
     def paid(self) -> bool:
         """
             Method to mark a payment as paid
         """
-        self.time_paid = datetime.now().time()
+        self.time_paid = datetime.now()
         return self.put()
