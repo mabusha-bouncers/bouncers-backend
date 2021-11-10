@@ -97,7 +97,7 @@ class TimeSheetModel(BaseModel):
             see AmountMixin
         :return:
         """
-        amount_cents = self.time_worked_hours * self.hourly_rate * 100
+        amount_cents = int(self.time_worked_hours * self.hourly_rate * 100)
         return AmountMixin(amount_cents=amount_cents, currency=config_instance.CURRENCY)
 
     def __str__(self) -> str:

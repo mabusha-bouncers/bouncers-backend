@@ -40,7 +40,9 @@ class PaymentView(ViewModel):
 
     @staticmethod
     def post(payment_data: dict) -> tuple:
-        """ create a payment """
+        """
+        **post**
+        create a payment """
         if payment_data is None:
             raise InputError(description='Payment data is required')
 
