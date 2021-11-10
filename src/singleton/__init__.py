@@ -4,7 +4,7 @@
 """
 
 
-class Singleton(type):
+class Singleton:
     """
         **Class Singleton**
             singleton instance
