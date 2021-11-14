@@ -74,9 +74,7 @@ class TimeSheetModel(BaseModel):
             calculates the total time worked in hours
         :return: int -> total time worked in hours
         """
-        if self.time_of_duty and self.time_on_duty:
-            return (self.time_of_duty - self.time_on_duty).seconds // 3600
-        return 0
+        return (self.time_of_duty - self.time_on_duty).seconds // 3600 if self.time_of_duty and self.time_on_duty else 0
 
     @property
     def time_worked_minutes(self) -> int:
@@ -85,9 +83,7 @@ class TimeSheetModel(BaseModel):
             calculates the total time worked in minutes
         :return: int -> total time worked in minutes
         """
-        if self.time_of_duty and self.time_on_duty:
-            return (self.time_of_duty - self.time_on_duty).seconds // 60
-        return 0
+        return (self.time_of_duty - self.time_on_duty).seconds // 60 if self.time_of_duty and self.time_on_duty else 0
 
     @property
     def calculate_pay(self) -> AmountMixin:
@@ -97,8 +93,8 @@ class TimeSheetModel(BaseModel):
             see AmountMixin
         :return:
         """
-        amount_cents = int(self.time_worked_hours * self.hourly_rate * 100)
-        return AmountMixin(amount_cents=amount_cents, currency=config_instance.CURRENCY)
+        _amount_cents = int(self.time_worked_hours * self.hourly_rate * 100)
+        return AmountMixin(amount_cents=_amount_cents, currency=config_instance.CURRENCY)
 
     def __str__(self) -> str:
         return f"<TimeSheet: rate: {self.hourly_rate} time worked: {self.time_worked_hours} " \
