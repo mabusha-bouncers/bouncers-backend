@@ -24,7 +24,7 @@ class BouncerView(ViewModel):
         super(BouncerView, self).__init__()
 
     @staticmethod
-    def get(uid: str):
+    def get(uid: str) -> tuple:
         """
             will retrieve a single Bouncer by id
         :param uid:
@@ -33,7 +33,9 @@ class BouncerView(ViewModel):
         bouncer_instance: BouncerModel = BouncerModel.query(BouncerModel.uid == uid).get()
         if not isinstance(bouncer_instance, BouncerModel) or not bool(bouncer_instance):
             return jsonify(dict(status=False, message='unable to find bouncer with that id'))
-        return jsonify(status=True, payload=bouncer_instance.to_dict(), message='bouncer successfully retrieved'), 200
+        return jsonify(dict(status=True, 
+                            payload=bouncer_instance.to_dict(), 
+                            message='bouncer successfully retrieved')), status_codes.successfully_updated_code
 
     @staticmethod
     def post(bouncer_details: dict):
@@ -55,10 +57,12 @@ class BouncerView(ViewModel):
             _message: str = 'Unable to create new User due to a technical error please try again later'
             raise DataServiceError(description=_message)
 
-        return jsonify(status=True, payload=bouncer_instance.to_dict(), message='successfully created new bouncer')
+        return jsonify(dict(status=True, 
+                            payload=bouncer_instance.to_dict(), 
+                            message='successfully created new bouncer')), status_codes.successfully_updated_code
 
     @staticmethod
-    def put(bouncer_details: dict):
+    def put(bouncer_details: dict) -> tuple:
         """
             will update a bouncer depending on bouncer details
         :param bouncer_details:
@@ -75,10 +79,12 @@ class BouncerView(ViewModel):
             _message: str = 'Database Error: Unable to update user, please try again later'
             raise DataServiceError(description=_message)
 
-        return jsonify(status=True, payload=bouncer_instance.to_dict(), message='successfully updated user details')
+        return jsonify(dict(status=True, 
+                            payload=bouncer_instance.to_dict(), 
+                            message='successfully updated user details')), status_codes.successfully_updated_code
 
     @staticmethod
-    def delete(uid: str):
+    def delete(uid: str) -> tuple:
         """
             will remove a bouncer from the database
         :param uid:
@@ -93,7 +99,8 @@ class BouncerView(ViewModel):
 
         bouncer_instance.key.delete()
 
-        return jsonify(status=True, message='user successfully deleted')
+        return jsonify(dict(status=True, 
+                            message='user successfully deleted')), status_codes.successfully_updated_code
 
 
 class BouncerListView(ListView):
@@ -106,12 +113,14 @@ class BouncerListView(ListView):
     def __init__(self):
         super(BouncerListView, self).__init__()
 
-    def get(self):
+    def get(self) -> tuple:
         """
             returns a list of bouncers
         :return:
         """
-        return jsonify(status=True, payload=self.bouncers_generator(), message='successfully retrieved bouncers')
+        return jsonify(dict(status=True, 
+                            payload=self.bouncers_generator(), 
+                            message='successfully retrieved bouncers')), status_codes.status_ok_code
 
 
 class BouncersPageView(ListView):
@@ -124,7 +133,7 @@ class BouncersPageView(ListView):
     def __init__(self):
         super(BouncersPageView, self).__init__()
 
-    def get(self, page_number: int):
+    def get(self, page_number: int) -> tuple:
         """
 
         :param page_number:
@@ -133,9 +142,9 @@ class BouncersPageView(ListView):
         if not isinstance(page_number, int):
             raise InputError(description='page number should be an integer')
 
-        return jsonify(status=True,
-                       payload=self.bouncers_generator()[self.page_size * page_number:self.page_size],
-                       message='successfully retrieved bouncers at that page')
+        return jsonify(dict(status=True,
+                            payload=self.bouncers_generator()[self.page_size * page_number:self.page_size],
+                            message='successfully retrieved bouncers at that page')), status_codes.status_ok_code
 
 
 class BouncerFeedBackView(ViewModel):
