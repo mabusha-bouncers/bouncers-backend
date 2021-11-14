@@ -58,12 +58,14 @@ class AddressModel(BaseModel):
 
     @property
     def address(self) -> str:
-        """returns the address as string"""
+        """**address**
+         returns the address as string"""
         return f"{self.street}, {self.city_town}, {self.province}, {self.country}, {self.postal_code}"
     
     @property
     def address_dict(self) -> dict:
-        """returns the address as dict"""
+        """**address_dict**
+        returns the address as dict"""
         return {
             'address_id': self.address_id,
             'street': self.street,

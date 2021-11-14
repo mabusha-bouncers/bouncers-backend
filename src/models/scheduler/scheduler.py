@@ -86,8 +86,6 @@ class BouncerScheduled(BaseModel):
     time_created: datetime = ndb.DateTimeProperty(auto_now_add=True)
     time_updated: datetime = ndb.DateTimeProperty(auto_now=True)
 
-    
-
     def __str__(self) -> str:
         return f"{self.schedule_name} - {self.is_active} - {self.time_created}"
     

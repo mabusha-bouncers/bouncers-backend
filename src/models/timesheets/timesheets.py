@@ -11,9 +11,7 @@ __licence__ = "MIT"
 from datetime import date, datetime
 from enum import Enum
 from typing import List
-
 from google.cloud import ndb
-
 from src.config import config_instance
 from src.models.basemodel import BaseModel
 from src.models.mixins.mixins import AmountMixin
@@ -44,6 +42,7 @@ class DaysOfWeekType(Enum):
 class TimeSheetModel(BaseModel):
     """
         **TimeSheetModel**
+        
             keeps track of hours worked per bouncer / security guard
             and total pay for those hours
 
@@ -110,5 +109,6 @@ class TimeSheetModel(BaseModel):
 
 
 if __name__ == '__main__':
+    """ """
     for day in DaysOfWeekType.types():
         print(day.name, day.value)

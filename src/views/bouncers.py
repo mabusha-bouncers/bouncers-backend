@@ -2,10 +2,8 @@
 **bouncers view**
 """
 from typing import Generator, List
-
 from flask import jsonify
 from google.cloud import ndb
-
 from src.cache import app_cache
 from src.exceptions import InputError, DataServiceError, status_codes
 from src.models.users.bouncer.bouncer import BouncerFeedbackModel
@@ -38,7 +36,7 @@ class BouncerView(ViewModel):
                             message='bouncer successfully retrieved')), status_codes.successfully_updated_code
 
     @staticmethod
-    def post(bouncer_details: dict):
+    def post(bouncer_details: dict) -> tuple:
         """
             will create a bouncer from bouncer_details
         :param bouncer_details:
@@ -233,7 +231,8 @@ class BouncerFeedBackView(ViewModel):
 
 
 class BouncerFeedbackListView(ViewModel):
-    """allows access to a list of bouncers feedback"""
+    """**BouncerFeedbackListView**
+    allows access to a list of bouncers feedback"""
     methods = ['GET']
 
     def __init__(self):
