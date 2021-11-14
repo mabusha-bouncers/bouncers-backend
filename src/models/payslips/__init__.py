@@ -13,6 +13,7 @@ class PaySlip(BaseModel):
     """
         **PaySlip**
             a model for payslips database table
+            
     """
     uid: str = ndb.StringProperty(indexed=True, required=True)
     employee_id: str = ndb.StringProperty(indexed=True, required=True)
