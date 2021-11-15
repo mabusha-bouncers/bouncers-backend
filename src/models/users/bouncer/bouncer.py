@@ -8,13 +8,10 @@ __twitter__ = "@blueitserver"
 __github_profile__ = "https://github.com/freelancing-solutions/"
 __licence__ = "MIT"
 
-from abc import ABC
 from enum import Enum
 from statistics import mean
 from typing import List, Optional, Generator
-
 from google.cloud import ndb
-
 from src.cache import app_cache
 from src.models.context import get_client
 from src.models.mixins.mixins import FeedbackMixin, AmountMixin
@@ -100,7 +97,6 @@ class BouncerModel(UserModel):
         """
             **pay_bonus**
                 pays to bouncer the bonus worked by the bouncer
-            
         """
         PayrollProcessingModel().add_bonus_pay(amount, self.uid)
 

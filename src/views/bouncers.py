@@ -4,7 +4,6 @@
 from typing import Generator, List
 from flask import jsonify
 from google.cloud import ndb
-from src.cache import app_cache
 from src.exceptions import InputError, DataServiceError, status_codes
 from src.models.users.bouncer.bouncer import BouncerFeedbackModel
 from src.utils.utils import return_ttl, create_id
@@ -246,5 +245,3 @@ class BouncerFeedbackListView(ViewModel):
         return jsonify(dict(status=True,
                             payload=feedback_list,
                             message='successfully retrieved feedback')), status_codes.status_ok_code
-
-
