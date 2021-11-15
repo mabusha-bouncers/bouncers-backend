@@ -3,10 +3,13 @@
         this is a model for payslips database table
 
 """
+from datetime import date
+from typing import Optional
+
+from src.config import config_instance
 from src.models.basemodel import BaseModel
 from src.models.mixins import AmountMixin
 from google.cloud import ndb
-
 
 
 class PaySlip(BaseModel):
@@ -23,8 +26,6 @@ class PaySlip(BaseModel):
     bonus: AmountMixin = ndb.StructuredProperty(AmountMixin, required=True)
     is_bonus_paid: bool = ndb.BooleanProperty(indexed=True, required=True)
     is_paid_to_bouncer: bool = ndb.BooleanProperty(indexed=True, required=True)
-    
-
 
     @property
     def hours(self) -> float:
@@ -41,7 +42,7 @@ class PaySlip(BaseModel):
                 returns amount to pay to bouncers based on rate and hours worked
         """
         # TODO have to make rate dependent on bouncer rating
-        return AmountMixin(amount_in_cents=int(self.hours * self.rate * 100), currency=config_instance.currency)
+        return AmountMixin(amount_in_cents=int(self.hours * self.rate * 100), currency=config_instance.CURRENCY)
 
     @property
     def total_amount(self) -> AmountMixin:
@@ -50,7 +51,8 @@ class PaySlip(BaseModel):
                 returns total amount to pay to bouncers  based on rate and hours worked + bonus 
                 if bonus is to be paid separately then use total and bonus figures separately
         """
-        return AmountMixin(amount_in_cents=self.normal_pay.amount_in_cents + self.bonus.amount_in_cents, currency=config_instance.currency)
+        return AmountMixin(amount_in_cents=self.normal_pay.amount_in_cents + self.bonus.amount_in_cents,
+                           currency=config_instance.CURRENCY)
 
     @property
     def bouncer_details(self) -> Optional[dict]:
@@ -63,7 +65,6 @@ class PaySlip(BaseModel):
         if isinstance(bouncer_instance, BouncerModel) and bool(bouncer_instance):
             return bouncer_instance.to_dict()
         return None
-        
 
     def pay_normal_pay_to_bouncer(self) -> bool:
         """
@@ -92,8 +93,6 @@ class PaySlip(BaseModel):
             self.put()
             return True
         return False
-
-
 
     def pay_total_amount_to_bouncer(self) -> bool:
         """

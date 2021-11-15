@@ -9,6 +9,8 @@ __twitter__ = "@blueitserver"
 __github_profile__ = "https://github.com/freelancing-solutions/"
 __licence__ = "MIT"
 
+from datetime import date, time
+
 from google.cloud import ndb
 from src.models.basemodel import BaseModel
 
