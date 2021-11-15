@@ -21,7 +21,6 @@ class DailySlotsTypes(Enum):
     """
     **Class DailySlotsTypes**
         there are three divisions of 8 hours each in a single day for which a user
-
     """
     morning = 'morning'
     evening = 'evening'

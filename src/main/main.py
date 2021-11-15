@@ -39,16 +39,22 @@ def create_app(config=config_instance) -> Flask:
         from src.views.payments import PaymentView, PaymentListView
 
         # bouncers endpoints
-        api.add_resource(BouncerView, '/api/v1/bouncer', endpoint='get_update_bouncer',
-                         methods=['GET', 'POST', 'PUT', 'DELETE'])
+        api.add_resource(BouncerView, '/api/v1/bouncer/<string:uid>', endpoint='get_update_bouncer',
+                         methods=['GET', 'PUT', 'DELETE'])
+        api.add_resource(BouncerView, '/api/v1/bouncer', endpoint='create_bouncer',
+                         methods=['POST'])
+
         api.add_resource(BouncersPageView, '/api/v1/bouncer/page/<int:page_number>', endpoint='get_bouncer_by_page',
                          methods=['GET'])
         api.add_resource(BouncerListView, '/api/v1/bouncer/list', endpoint='get_bouncers_list',
                          methods=['GET'])
 
         # clients endpoints
-        api.add_resource(ClientView, '/api/v1/client', endpoint='get_update_client',
-                         methods=['GET', 'POST', 'PUT', 'DELETE'])
+        api.add_resource(ClientView, '/api/v1/client/<string:uid>', endpoint='get_update_client',
+                         methods=['GET', 'PUT', 'DELETE'])
+        api.add_resource(ClientView, '/api/v1/client', endpoint='create_client',
+                         methods=['POST'])
+                         
         api.add_resource(ClientsPageView, '/api/v1/client/page/<int:page_number>', endpoint='get_client_by_page',
                          methods=['GET'])
         api.add_resource(ClientsListView, '/api/v1/client/list', endpoint='get_client_list',
