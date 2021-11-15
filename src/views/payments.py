@@ -19,7 +19,7 @@ class PaymentView(ViewModel):
     """
     methods = ['GET', 'POST', 'PUT', 'DELETE']
 
-    def __init__(self, **kwargs):
+    def __init__(self):
         super().__init__()
 
     @staticmethod
@@ -100,12 +100,12 @@ class PaymentListView(ViewModel):
     """
     methods = ['GET']
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self):
         """initialize the payment list view"""
-        super().__init__(*args, **kwargs)
+        super().__init__()
 
     @staticmethod
-    def get(self) -> tuple:
+    def get() -> tuple:
         """ 
         **return a list of payments**
             returns a complete list of all payments every made by the system
@@ -128,9 +128,9 @@ class PaymentListByClientView(ViewModel):
     """
     methods = ['GET']
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self):
         """initialize the payment list view"""
-        super().__init__(*args, **kwargs)
+        super().__init__()
 
     @staticmethod
     def get(client_id: str) -> tuple:
@@ -160,9 +160,9 @@ class PaymentListByClientAndDateView(ViewModel):
     """
     methods = ['GET']
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self):
         """initialize the payment list view"""
-        super().__init__(*args, **kwargs)
+        super().__init__()
 
     @staticmethod
     def get(client_id: str, date_created: str) -> tuple:
