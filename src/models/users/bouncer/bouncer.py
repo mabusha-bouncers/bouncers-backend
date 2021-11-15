@@ -56,12 +56,13 @@ class SecurityGradesType(Enum):
     grade_e = 'e'
 
     @classmethod
-    def types(cls) -> List:
+    def __list__(cls) -> List:
+        """list of enums"""
         return list(cls)
 
     @classmethod
-    def values(cls) -> List[str]:
-        return [_grade.value for _grade in cls.types()]
+    def __values__(cls) -> List[str]:
+        return [_grade.value for _grade in list(cls)]
 
 
 class BouncerModel(UserModel):
@@ -76,7 +77,7 @@ class BouncerModel(UserModel):
     available: bool = ndb.BooleanProperty(default=False)
     certified: bool = ndb.BooleanProperty(default=False)
     security_grade: str = ndb.StringProperty(default=SecurityGradesType.grade_e.value,
-                                             choices=SecurityGradesType.values())
+                                             choices=SecurityGradesType.__values__())
     years_experience: int = ndb.IntegerProperty(default=0)
 
     @property

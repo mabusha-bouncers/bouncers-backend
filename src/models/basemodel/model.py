@@ -66,7 +66,7 @@ class BaseModel(ndb.Expando):
         :param exclude: password
         :return: dict -> all user properties excluding password
         """
-        return super().to_dict(include=[prop._code_name for prop in self._properties.values()], exclude=exclude)
+        return super().to_dict(include=[prop._code_name for prop in self._properties.__values__()], exclude=exclude)
 
     @staticmethod
     @use_context
@@ -88,7 +88,7 @@ class BaseModel(ndb.Expando):
         :return: List[str]
         """
 
-        return [(prop._code_name, prop._from_base_type()) for prop in self._properties.values()]
+        return [(prop._code_name, prop._from_base_type()) for prop in self._properties.__values__()]
 
     def update(self, data: dict) -> None:
         """allows updating of a class instance form dict"""

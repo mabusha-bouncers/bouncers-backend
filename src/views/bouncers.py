@@ -30,7 +30,7 @@ class BouncerView(ViewModel):
         """
         bouncer_instance: BouncerModel = BouncerModel.query(BouncerModel.uid == uid).get()
         if not isinstance(bouncer_instance, BouncerModel) or not bool(bouncer_instance):
-            return jsonify(dict(status=False, message='unable to find bouncer with that id'))
+            return jsonify(dict(status=False, message='unable to find bouncer with that id')), status_codes.status_ok_code
         return jsonify(dict(status=True, 
                             payload=bouncer_instance.to_dict(), 
                             message='bouncer successfully retrieved')), status_codes.successfully_updated_code
