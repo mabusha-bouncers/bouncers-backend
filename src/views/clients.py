@@ -20,7 +20,7 @@ class ClientView(ViewModel):
         super(ClientView, self).__init__()
 
     @staticmethod
-    def get(uid: str):
+    def get(uid: str) -> tuple:
         """
         **get**
             returns a specific client
@@ -37,7 +37,7 @@ class ClientView(ViewModel):
                             message=_message)), status_codes.status_ok_code
 
     @staticmethod
-    def post(client_details: dict):
+    def post(client_details: dict) -> tuple:
         """
         **post**
             create a client instance from client details
@@ -57,7 +57,7 @@ class ClientView(ViewModel):
                             message=_message)), status_codes.status_ok_code
 
     @staticmethod
-    def put(client_details: dict):
+    def put(client_details: dict) -> tuple:
         """
         **put**
             update client details
@@ -81,7 +81,7 @@ class ClientView(ViewModel):
                             message=_message)), status_codes.status_ok_code
 
     @staticmethod
-    def delete(uid: str):
+    def delete(uid: str) -> tuple:
         """
             **delete*
                 delete client details from database
@@ -105,7 +105,7 @@ class ClientsListView(ListView):
     def __init__(self):
         super(ClientsListView, self).__init__()
 
-    def get(self):
+    def get(self) -> tuple:
         return jsonify(dict(status=True,
                             payload=self.client_generator(),
                             message='successfully retrieved client list')), status_codes.status_ok_code
@@ -118,7 +118,7 @@ class ClientsPageView(ListView):
     def __init__(self):
         super(ClientsPageView, self).__init__()
 
-    def get(self, page_number: int):
+    def get(self, page_number: int) -> tuple:
         """
 
         :param page_number:

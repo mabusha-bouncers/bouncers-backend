@@ -4,9 +4,14 @@
 
 """
 import asyncio
+from datetime import datetime, date
+from datetime import timedelta
+from typing import List
+
 from src.models.timesheets import TimeSheetModel
-from src.models.payroll import PayrollProcessingModel
+from src.models.payroll.payroll import PayrollProcessingModel
 from src.models.context import get_client
+from src.exceptions.exceptions import RequestError
 
 
 class CronJobs:
@@ -14,13 +19,14 @@ class CronJobs:
         **CronJobs Class**
             this class will run cron jobs
     """
+
     def __init__(self):
         """
             **__init__**
                 this method will initialize the class
         """
-        super().__init__()        
-    
+        super().__init__()
+
     @staticmethod
     async def put_model(model):
         """
@@ -30,14 +36,32 @@ class CronJobs:
         with get_client().context() as context:
             return model.put_async()
 
-        
+
+class ProcessesCalculatePayroll(CronJobs):
+    """Processes to calculate weekly and monthly payrolls"""
+
+    @staticmethod
+    def _return_timesheet(end_datetime, start_datetime) -> List[TimeSheetModel]:
+        return TimeSheetModel.query(TimeSheetModel.time_on_duty >= start_datetime,
+                                    TimeSheetModel.time_of_duty <= end_datetime).fetch()
+
+    def _process_payroll(self, date_now, start_datetime):
+        pay_list: list = [(timesheet.calculate_pay, timesheet.uid) for timesheet in
+                          self._return_timesheet(date_now, start_datetime)]
+        _pay_routines: list = []
+        for pay, uid in pay_list:
+            payroll: PayrollProcessingModel = PayrollProcessingModel(uid=uid, amount_to_pay=pay)
+            # Using coroutine to save all the PayRolls at once
+            _pay_routines.append(self.put_model(payroll))
+        asyncio.run(asyncio.gather(*_pay_routines))
 
 
-class CalculateMonthlyPayroll(CronJobs):
+class CalculateMonthlyPayroll(ProcessesCalculatePayroll):
     """
         **CalculateMonthlyPayroll**
             this class will calculate the monthly payroll
     """
+
     def __init__(self):
         """
             **__init__**
@@ -50,31 +74,23 @@ class CalculateMonthlyPayroll(CronJobs):
             **run**
                 this method will run the cron job
         """
-        date_now: datetime = datetime.now().date()
-        if date_now.day not in [27,28,29,30,31]:
-            return
+        date_now: date = datetime.now().date()
+        # NOTE: this only works if this cron job is called every end of the month
+        if date_now.day not in [27, 28, 29, 30, 31]:
+            raise RequestError(description='Invalid cron job request, date needs to be on the end of the month')
 
-        start_datetime: datetime = datetime(date_now.year, date_now.month, 1) - relativedelta(months=1)
-        end_datetime: datetime = date_now
-        monthly_timesheets: list = TimeSheetModel.query(TimeSheetModel.time_on_duty >= start_datetime, 
-                                                        TimeSheetModel.time_of_duty <= end_datetime).fetch()
-
-        pay_list: list =[(timesheet.calculate_pay(), timesheet.uid) for timesheet in monthly_timesheets]
-        _pay_routines: list = []
-        for pay, uid in pay_list:
-            payroll: PayrollProcessingModel = PayrollProcessingModel(uid=uid, amount_to_pay=pay)
-            # Using coroutine to save all the PayRolls at once
-            _pay_routines.append(self.put_model(payroll))
-        asyncio.gather(*_pay_routines)
+        start_datetime: date = date(year=date_now.year, month=date_now.month, day=1)
+        self._process_payroll(date_now, start_datetime)
         return
 
 
-class CalculateWeeklyPayroll(CronJobs):
+class CalculateWeeklyPayroll(ProcessesCalculatePayroll):
     """
         **CalculateWeeklyPayroll**
             this class will calculate the weekly payroll    
 
     """
+
     def __init__(self):
         """
             **__init__**
@@ -82,32 +98,21 @@ class CalculateWeeklyPayroll(CronJobs):
         """
         super().__init__()
         self._friday = 6
-        
 
     def run(self):
         """
             **run**
                 this method will run the cron job
         """
-        date_now: datetime = datetime.now().date()
-        if datetime.get_weekday() != self._friday:
+        date_now: date = datetime.now().date()
+        if date_now.weekday() != self._friday:
             # if not friday then return
             return
-        
-        start_date: datetime = date_now - timedelta(days=7)
-        end_date: datetime = date_now
-        weekly_timesheets: list = TimeSheetModel.query(TimeSheetModel.time_on_duty >= start_date, 
-                                                        TimeSheetModel.time_of_duty <= end_date).fetch()    
-                                                        
-        pay_list: list =[(timesheet.calculate_pay(), timesheet.uid) for timesheet in monthly_timesheets]
-        _pay_routines: list = []
-        for pay, uid in pay_list:
-            payroll: PayrollProcessingModel = PayrollProcessingModel(uid=uid, amount_to_pay=pay)
-            # Using coroutine to save all the PayRolls at once
-            _pay_routines.append(self.put_model(payroll))
-        asyncio.gather(*_pay_routines)
+
+        start_datetime: date = date(year=date_now.year, month=date_now.month, day=date_now.day) - timedelta(days=7)
+
+        self._process_payroll(date_now, start_datetime)
         return
-        
 
 
 class CreatePaySlip(CronJobs):
@@ -115,6 +120,7 @@ class CreatePaySlip(CronJobs):
         **CreatePaySlip**
             this class will create the payslip
     """
+
     def __init__(self):
         """
             **__init__**
@@ -128,7 +134,6 @@ class CreatePaySlip(CronJobs):
                 this method will run the cron job
         """
         pass
-
 
 
 class SendPaySlip(CronJobs):
@@ -137,6 +142,7 @@ class SendPaySlip(CronJobs):
             this class will send the payslip by email
 
     """
+
     def __init__(self):
         """
             **__init__**
@@ -150,12 +156,14 @@ class SendPaySlip(CronJobs):
                 this method will run the cron job
         """
         pass
+
 
 class SendPayNotifications(CronJobs):
     """
         **SendPayNotifications**
             this class will send the payment Notification by email & sms
     """
+
     def __init__(self):
         """
             **__init__**
@@ -163,11 +171,9 @@ class SendPayNotifications(CronJobs):
         """
         super().__init__()
 
-
     def run(self):
         """
             **run**
                 this method will run the cron job
         """
         pass
-    
