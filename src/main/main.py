@@ -54,7 +54,7 @@ def create_app(config=config_instance) -> Flask:
                          methods=['GET', 'PUT', 'DELETE'])
         api.add_resource(ClientView, '/api/v1/client', endpoint='create_client',
                          methods=['POST'])
-                         
+
         api.add_resource(ClientsPageView, '/api/v1/client/page/<int:page_number>', endpoint='get_client_by_page',
                          methods=['GET'])
         api.add_resource(ClientsListView, '/api/v1/client/list', endpoint='get_client_list',
@@ -96,9 +96,11 @@ def create_app(config=config_instance) -> Flask:
         # registering documentation
         docs.init_app(app)
         docs.register(target=BouncerView, endpoint='get_update_bouncer')
+        docs.register(target=BouncerView, endpoint='create_bouncer')
         docs.register(target=BouncersPageView, endpoint='get_bouncer_by_page')
         docs.register(target=BouncerListView, endpoint='get_bouncers_list')
         docs.register(target=ClientView, endpoint='get_update_client')
+        docs.register(target=ClientView, endpoint='create_client')
         docs.register(target=ClientsPageView, endpoint='get_client_by_page')
         docs.register(target=ClientsListView, endpoint='get_client_list')
 
