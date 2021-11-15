@@ -40,12 +40,17 @@ class CronJobs:
 class ProcessesCalculatePayroll(CronJobs):
     """Processes to calculate weekly and monthly payrolls"""
 
+    def __init__(self):
+        super().__init__()
+
     @staticmethod
     def _return_timesheet(end_datetime, start_datetime) -> List[TimeSheetModel]:
+        """search for timesheet between the start and end date"""
         return TimeSheetModel.query(TimeSheetModel.time_on_duty >= start_datetime,
                                     TimeSheetModel.time_of_duty <= end_datetime).fetch()
 
     def _process_payroll(self, date_now, start_datetime):
+        """given the present date and date to start processing from create payrolls"""
         pay_list: list = [(timesheet.calculate_pay, timesheet.uid) for timesheet in
                           self._return_timesheet(date_now, start_datetime)]
         _pay_routines: list = []
