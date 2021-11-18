@@ -1,8 +1,6 @@
 from typing import Optional, List
 
 from flask import jsonify
-from flask_apispec import MethodResource
-from flask_restful import Resource
 
 from src.cache import app_cache
 from src.exceptions import InputError
