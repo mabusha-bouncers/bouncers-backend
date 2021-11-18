@@ -113,6 +113,7 @@ class ClientsListView(ListView):
 
 class ClientsPageView(ListView):
     """
+    **ClientsPageView**
         enables the retrieval of clients by page number
     """
     def __init__(self):
